@@ -1,0 +1,36 @@
+﻿@model Presentation_Layer.ViewModels.QuestionViewModel
+
+<div class="form-group">
+    @for (var i = 0; i < Model.Options.Count; i++)
+    {
+        @Html.LabelFor(model => model.Options[i].OptionText)
+        @Html.TextAreaFor(model => model.Options[i].OptionText, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Options[i].OptionText, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model=>Model.Options[i].Id)
+        @Html.HiddenFor(model=>Model.Options[i].OptionText)
+    }
+
+    <button type="button" onclick="addNewOption(@Model.Options.Count);">Add new option</button>
+</div>
+
+<script>
+        function addNewOption(oldValue) {
+        let valdata = $("#createForm").serialize();
+
+            $.ajax({
+                url: "/Home/AddNewOption",
+                type: "GET",
+                data: 
+                {
+                    viewModel: valdata,
+                    newValue: oldValue + 1
+                }
+            })
+                .done(function (response) {
+                    $("#OptionsSection").html(response);
+                })
+                .fail(function () {
+                    alert('Fail');
+                });
+        }
+    </script>

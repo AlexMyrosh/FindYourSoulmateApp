@@ -1,15 +1,20 @@
+using AutoMapper;
+using Business_Logic_Layer.AutoMapper;
+using Business_Logic_Layer.Services;
+using Business_Logic_Layer.Services.Interfaces;
+using Data_Access_Layer.Context;
+using Data_Access_Layer.Repositories;
+using Data_Access_Layer.Repositories.Interfaces;
+using Data_Access_Layer.UnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Presentation_Layer.AutoMapper;
 
-namespace Presentation_layer
+namespace Presentation_Layer
 {
     public class Startup
     {
@@ -23,6 +28,22 @@ namespace Presentation_layer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var sqlConnectionString = Configuration.GetConnectionString("MSSQLConnectionString");
+            services.AddDbContext<MssqlContext>(options => options.UseSqlServer(sqlConnectionString));
+
+            services.AddSingleton(new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ModelsToEntityAutoMapper());
+                mc.AddProfile(new ModelsToViewModelsAutoMapper());
+            }).CreateMapper());
+
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IQuestionRepository, QuestionRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<MssqlContext, MssqlContext>();
+
+            services.AddMvc();
             services.AddControllersWithViews();
         }
 
@@ -35,10 +56,11 @@ namespace Presentation_layer
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -48,9 +70,7 @@ namespace Presentation_layer
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
