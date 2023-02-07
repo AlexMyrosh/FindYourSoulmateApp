@@ -10,6 +10,7 @@ namespace Business_Logic_Layer.AutoMapper
         {
             CreateMap<QuestionModel, Question>().ReverseMap();
             CreateMap<AnswerOptionModel, AnswerOption>().ReverseMap();
+            CreateMap<SurveyModel, Survey>().ReverseMap();
         }
     }
 }
