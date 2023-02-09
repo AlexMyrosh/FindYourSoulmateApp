@@ -11,6 +11,8 @@ namespace Presentation_Layer.AutoMapper
             CreateMap<QuestionViewModel, QuestionModel>().ReverseMap();
             CreateMap<AnswerOptionViewModel, AnswerOptionModel>().ReverseMap();
             CreateMap<SurveyViewModel, SurveyModel>().ReverseMap();
+            CreateMap<UserViewModel, UserModel>().ReverseMap();
+            CreateMap<UserAnswerViewModel, UserAnswerModel>().ReverseMap();
         }
     }
 }

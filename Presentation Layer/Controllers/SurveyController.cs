@@ -12,14 +12,17 @@ namespace Presentation_Layer.Controllers
     public class SurveyController : Controller
     {
         private readonly ISurveyService _surveyService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private const int NumberOfInitialQuestions = 1;
         private const int NumberOfInitialOptions = 2;
+        private const string CookieKey = "UserId";
 
-        public SurveyController(ISurveyService surveyService, IMapper mapper)
+        public SurveyController(ISurveyService surveyService, IMapper mapper, IUserService userService)
         {
             _surveyService = surveyService;
             _mapper = mapper;
+            _userService = userService;
         }
 
         // GET: SurveyController
@@ -136,22 +139,49 @@ namespace Presentation_Layer.Controllers
         // POST: SurveyController/PassSurvey/5
         public async Task<ActionResult> PassSurvey(Guid id)
         {
-            var model = await _surveyService.GetByIdWithDetailsAsync(id);
-            var viewModel = _mapper.Map<SurveyViewModel>(model);
-            viewModel.User = new UserViewModel
+            var userId = GetUserId();
+            var currentUser = await _userService.GetByIdAsync(userId);
+            if (currentUser == null)
             {
-                Answers = new List<string>(viewModel.Questions.Count)
-            };
-            for (int i = 0; i < viewModel.User.Answers.Capacity; i++)
-            {
-                viewModel.User.Answers.Add(string.Empty);
+                var userViewModel = new UserViewModel(100)
+                {
+                    Id = userId
+                };
+                currentUser = _mapper.Map<UserModel>(userViewModel);
+                await _userService.AddAsync(currentUser);
             }
+            else
+            {
+                currentUser.Answers = new List<UserAnswerModel>(100);
+            }
+
+            var model = await _surveyService.GetByIdWithDetailsAsync(id);
+
+            for (var i = 0; i < currentUser.Answers.Capacity; i++)
+            {
+                currentUser.Answers.Add(new UserAnswerModel
+                {
+                    User = currentUser,
+                    Id = Guid.NewGuid(),
+                    Question = model.Questions[i]
+                });
+            }
+            var viewModel = _mapper.Map<SurveyViewModel>(model);
+            viewModel.User = _mapper.Map<UserViewModel>(currentUser);
+
             return View(viewModel);
         }
 
         public async Task<ActionResult> SurveyProcessing(SurveyViewModel viewModel)
         {
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
+
+        private Guid GetUserId()
+        {
+            Guid.TryParse(HttpContext.Items[CookieKey].ToString(), out var id);
+            return id;
+        }
+
     }
 }

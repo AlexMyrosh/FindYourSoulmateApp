@@ -13,6 +13,6 @@ namespace Business_Logic_Layer.Models
 
         public bool IsDeleted { get; set; }
 
-        public IEnumerable<QuestionModel> Questions { get; set; }
+        public List<QuestionModel> Questions { get; set; }
     }
 }
