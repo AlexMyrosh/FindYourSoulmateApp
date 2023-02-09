@@ -10,6 +10,7 @@ namespace Data_Access_Layer.UnitOfWork
         private readonly MssqlContext _sqlContext;
         private IQuestionRepository _questionRepository;
         private ISurveyRepository _surveyRepository;
+        private IUserRepository _userRepository;
 
         public UnitOfWork(MssqlContext sqlContext)
         {
@@ -31,6 +32,15 @@ namespace Data_Access_Layer.UnitOfWork
             {
                 _surveyRepository ??= new SurveyRepository(_sqlContext);
                 return _surveyRepository;
+            }
+        }
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                _userRepository ??= new UserRepository(_sqlContext);
+                return _userRepository;
             }
         }
 

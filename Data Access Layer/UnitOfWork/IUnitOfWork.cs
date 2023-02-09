@@ -9,6 +9,8 @@ namespace Data_Access_Layer.UnitOfWork
 
         public ISurveyRepository SurveyRepository { get; }
 
+        public IUserRepository UserRepository { get; }
+
         public Task SaveChangesAsync();
     }
 }

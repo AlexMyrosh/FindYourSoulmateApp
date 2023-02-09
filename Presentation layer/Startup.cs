@@ -39,9 +39,11 @@ namespace Presentation_Layer
 
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<ISurveyService, SurveyService>();
+            services.AddScoped<IUserService, UserService>();
 
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<ISurveyRepository, SurveyRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<MssqlContext, MssqlContext>();
