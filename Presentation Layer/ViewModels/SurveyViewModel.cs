@@ -25,6 +25,8 @@ namespace Presentation_Layer.ViewModels
 
         public bool IsDeleted { get; set; }
 
+        public DateTime StopDateTime { get; set; }
+
         public UserViewModel User { get; set; }
 
         public List<QuestionViewModel> Questions { get; set; }
