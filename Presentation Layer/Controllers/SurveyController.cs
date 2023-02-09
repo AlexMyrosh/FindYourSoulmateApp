@@ -132,5 +132,26 @@ namespace Presentation_Layer.Controllers
             viewModel.Questions = question;
             return PartialView("PartialViews/_QuestionsPartial", viewModel);
         }
+
+        // POST: SurveyController/PassSurvey/5
+        public async Task<ActionResult> PassSurvey(Guid id)
+        {
+            var model = await _surveyService.GetByIdWithDetailsAsync(id);
+            var viewModel = _mapper.Map<SurveyViewModel>(model);
+            viewModel.User = new UserViewModel
+            {
+                Answers = new List<string>(viewModel.Questions.Count)
+            };
+            for (int i = 0; i < viewModel.User.Answers.Capacity; i++)
+            {
+                viewModel.User.Answers.Add(string.Empty);
+            }
+            return View(viewModel);
+        }
+
+        public async Task<ActionResult> SurveyProcessing(SurveyViewModel viewModel)
+        {
+            return View(nameof(Index));
+        }
     }
 }
