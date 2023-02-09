@@ -59,6 +59,7 @@ namespace Data_Access_Layer.Repositories
         {
             return await _sqlContext.Surveys
                 .Include(entity => entity.Questions)
+                .ThenInclude(nestedEntity=>nestedEntity.Options)
                 .Where(entity => entity.Id == id)
                 .FirstOrDefaultAsync();
         }
