@@ -4,7 +4,7 @@ namespace Presentation_Layer.ViewModels
 {
     public class AnswerOptionViewModel
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         public string OptionText { get; set; }
 

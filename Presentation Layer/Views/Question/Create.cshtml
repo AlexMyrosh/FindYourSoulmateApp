@@ -1,17 +1,17 @@
 ﻿@model Presentation_Layer.ViewModels.QuestionViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Create</h1>
 
 <h4>QuestionViewModel</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
+        @using (Html.BeginForm("Create", "Question", FormMethod.Post, new{id = "createForm"}))
         {
             <div class="form-group">
                 @Html.LabelFor(model => model.Body)
@@ -24,13 +24,13 @@
                 @Html.TextBoxFor(model => model.Coefficient, new { @class = "form-control", type = "number", min = "0.2", step = "0.2", max = "1" })
                 @Html.ValidationMessageFor(model => model.Coefficient, "", new { @class = "text-danger" })
             </div>
-
+            
             <div id="OptionsSection">
-                @Html.Partial("PartialViews/_QuestionOptionsPartial", Model)
+                @await Html.PartialAsync("PartialViews/_QuestionOptionsPartial", Model)
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary"/>
+                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         }
     </div>
@@ -41,5 +41,6 @@
 </div>
 
 @section Scripts {
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

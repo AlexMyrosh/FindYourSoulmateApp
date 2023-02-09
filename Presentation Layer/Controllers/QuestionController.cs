@@ -6,23 +6,24 @@ using System.Threading.Tasks;
 using Business_Logic_Layer.Models;
 using Business_Logic_Layer.Services.Interfaces;
 using Presentation_Layer.ViewModels;
+using Data_Access_Layer.Models;
 
 namespace Presentation_Layer.Controllers
 {
-    public class HomeController : Controller
+    public class QuestionController : Controller
     {
         private readonly IQuestionService _questionService;
         private readonly IMapper _mapper;
         private const int NumberOfInitialOptions = 1;
 
-        public HomeController(IQuestionService questionService, IMapper mapper)
+        public QuestionController(IQuestionService questionService, IMapper mapper)
         {
             _questionService = questionService;
             _mapper = mapper;
         }
 
 
-        // GET: HomeController
+        // GET: QuestionController
         public async Task<ActionResult> Index()
         {
             var models = await _questionService.GetAllWithDetailsAsync();
@@ -30,7 +31,7 @@ namespace Presentation_Layer.Controllers
             return View(viewModels);
         }
 
-        // GET: HomeController/Details/5
+        // GET: QuestionController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
             var model = await _questionService.GetByIdWithDetailsAsync(id);
@@ -38,14 +39,14 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // GET: HomeController/Create
+        // GET: QuestionController/Create
         public ActionResult Create()
         {
             var viewModel = new QuestionViewModel(NumberOfInitialOptions);
             return View(viewModel);
         }
 
-        // POST: HomeController/Create
+        // POST: QuestionController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(QuestionViewModel viewModel)
@@ -62,7 +63,7 @@ namespace Presentation_Layer.Controllers
             }
         }
 
-        // GET: HomeController/Edit/5
+        // GET: QuestionController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
             var model = await _questionService.GetByIdWithDetailsAsync(id);
@@ -70,7 +71,7 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // POST: HomeController/Edit/5
+        // POST: QuestionController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(QuestionViewModel viewModel)
@@ -87,7 +88,7 @@ namespace Presentation_Layer.Controllers
             }
         }
 
-        // GET: HomeController/Delete/5
+        // GET: QuestionController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
             var model = await _questionService.GetByIdWithDetailsAsync(id);
@@ -95,7 +96,7 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // POST: HomeController/Delete/5
+        // POST: QuestionController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(QuestionViewModel viewModel)
@@ -111,7 +112,8 @@ namespace Presentation_Layer.Controllers
             }
         }
 
-        public PartialViewResult AddNewOption(QuestionViewModel viewModel, int newValue)
+        [HttpPost]
+        public PartialViewResult AddNewOption(QuestionViewModel viewModel, int newValue,Guid questionId)
         {
             var options = new List<AnswerOptionViewModel>(newValue);
             for (var i = 0; i < options.Capacity; i++)
@@ -127,6 +129,7 @@ namespace Presentation_Layer.Controllers
             }
 
             viewModel.Options = options;
+            viewModel.Id = questionId;
             return PartialView("PartialViews/_QuestionOptionsPartial", viewModel);
         }
     }

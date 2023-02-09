@@ -11,5 +11,7 @@ namespace Data_Access_Layer.Context
         public DbSet<Question> Questions { get; set; }
 
         public DbSet<AnswerOption> AnswerOptions { get; set; }
+
+        public DbSet<Survey> Surveys { get; set; }
     }
 }

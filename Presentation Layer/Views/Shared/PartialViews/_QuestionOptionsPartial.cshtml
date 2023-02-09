@@ -10,24 +10,25 @@
         @Html.HiddenFor(model=>Model.Options[i].OptionText)
     }
 
-    <button type="button" onclick="addNewOption(@Model.Options.Count);">Add new option</button>
+    <button type="button" onclick="addNewOption(@Model.Options.Count, '@Model.Id');">Add new option</button>
 </div>
 
 <script>
-        function addNewOption(oldValue) {
+        function addNewOption(oldValue, id) {
         let valdata = $("#createForm").serialize();
-
+        console.log(id)
             $.ajax({
-                url: "/Home/AddNewOption",
-                type: "GET",
+                url: "/Question/AddNewOption",
+                type: "POST",
                 data: 
                 {
                     viewModel: valdata,
-                    newValue: oldValue + 1
+                    newValue: oldValue + 1,
+                    questionId: id
                 }
             })
                 .done(function (response) {
-                    $("#OptionsSection").html(response);
+                $("#OptionsSection_" + id).html(response);
                 })
                 .fail(function () {
                     alert('Fail');

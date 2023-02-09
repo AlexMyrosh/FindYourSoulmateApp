@@ -7,6 +7,8 @@ namespace Data_Access_Layer.UnitOfWork
     {
         public IQuestionRepository QuestionRepository { get; }
 
+        public ISurveyRepository SurveyRepository { get; }
+
         public Task SaveChangesAsync();
     }
 }

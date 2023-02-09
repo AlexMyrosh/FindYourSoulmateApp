@@ -13,6 +13,8 @@ namespace Data_Access_Layer.Models
 
         public bool IsDeleted { get; set; }
 
+        public Survey Survey { get; set; }
+
         public IEnumerable<AnswerOption> Options { get; set; }
     }
 }
