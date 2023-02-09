@@ -38,7 +38,10 @@ namespace Presentation_Layer
             }).CreateMapper());
 
             services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<ISurveyService, SurveyService>();
+
             services.AddScoped<IQuestionRepository, QuestionRepository>();
+            services.AddScoped<ISurveyRepository, SurveyRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<MssqlContext, MssqlContext>();
@@ -70,7 +73,7 @@ namespace Presentation_Layer
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Survey}/{action=Index}/{id?}");
             });
         }
     }
