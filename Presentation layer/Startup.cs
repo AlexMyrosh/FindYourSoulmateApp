@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Presentation_Layer.AutoMapper;
 using Presentation_Layer.MiddleWares;
+using Hangfire;
 
 namespace Presentation_Layer
 {
@@ -50,6 +51,9 @@ namespace Presentation_Layer
             services.AddScoped<MssqlContext, MssqlContext>();
 
             services.AddTransient<UserIdCookiesMiddleware>();
+
+            services.AddHangfire(x => x.UseSqlServerStorage(sqlConnectionString));
+            services.AddHangfireServer();
 
             services.AddMvc();
             services.AddControllersWithViews();

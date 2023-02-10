@@ -71,10 +71,14 @@ namespace Business_Logic_Layer.Services
         public async Task<UserModel> GetOrCreateUserByIdAsync(Guid id)
         {
             var entity = await _unitOfWork.UserRepository.GetByIdAsync(id);
-            entity ??= await _unitOfWork.UserRepository.AddAsync(new User
+            if (entity == null)
+            {
+                entity = await _unitOfWork.UserRepository.AddAsync(new User
                 {
                     Id = id
                 });
+                await _unitOfWork.SaveChangesAsync();
+            }
 
             var model = _mapper.Map<UserModel>(entity);
             return model;
