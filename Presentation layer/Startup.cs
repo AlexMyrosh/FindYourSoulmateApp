@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Presentation_Layer.AutoMapper;
+using Presentation_Layer.MiddleWares;
 
 namespace Presentation_Layer
 {
@@ -48,6 +49,8 @@ namespace Presentation_Layer
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<MssqlContext, MssqlContext>();
 
+            services.AddTransient<UserIdCookiesMiddleware>();
+
             services.AddMvc();
             services.AddControllersWithViews();
         }
@@ -65,6 +68,8 @@ namespace Presentation_Layer
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseMiddleware<UserIdCookiesMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

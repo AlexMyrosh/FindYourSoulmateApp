@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Business_Logic_Layer.Models;
 using Business_Logic_Layer.Services.Interfaces;
 using Presentation_Layer.ViewModels;
-using Data_Access_Layer.Models;
 
 namespace Presentation_Layer.Controllers
 {
@@ -22,8 +21,6 @@ namespace Presentation_Layer.Controllers
             _mapper = mapper;
         }
 
-
-        // GET: QuestionController
         public async Task<ActionResult> Index()
         {
             var models = await _questionService.GetAllWithDetailsAsync();
@@ -31,7 +28,6 @@ namespace Presentation_Layer.Controllers
             return View(viewModels);
         }
 
-        // GET: QuestionController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
             var model = await _questionService.GetByIdWithDetailsAsync(id);
@@ -39,14 +35,12 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // GET: QuestionController/Create
         public ActionResult Create()
         {
             var viewModel = new QuestionViewModel(NumberOfInitialOptions);
             return View(viewModel);
         }
 
-        // POST: QuestionController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(QuestionViewModel viewModel)
@@ -63,7 +57,6 @@ namespace Presentation_Layer.Controllers
             }
         }
 
-        // GET: QuestionController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
             var model = await _questionService.GetByIdWithDetailsAsync(id);
@@ -71,7 +64,6 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // POST: QuestionController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(QuestionViewModel viewModel)
@@ -88,7 +80,6 @@ namespace Presentation_Layer.Controllers
             }
         }
 
-        // GET: QuestionController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
             var model = await _questionService.GetByIdWithDetailsAsync(id);
@@ -96,7 +87,6 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // POST: QuestionController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(QuestionViewModel viewModel)

@@ -8,8 +8,6 @@ namespace Presentation_Layer.ViewModels
 
         public string OptionText { get; set; }
 
-        public bool IsSelected { get; set; }
-
         public QuestionViewModel Question { get; set; }
     }
 }

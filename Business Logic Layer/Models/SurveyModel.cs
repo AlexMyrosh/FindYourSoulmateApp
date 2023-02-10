@@ -11,8 +11,10 @@ namespace Business_Logic_Layer.Models
 
         public string Description { get; set; }
 
+        public DateTime StopDateTime { get; set; }
+
         public bool IsDeleted { get; set; }
 
-        public IEnumerable<QuestionModel> Questions { get; set; }
+        public List<QuestionModel> Questions { get; set; }
     }
 }

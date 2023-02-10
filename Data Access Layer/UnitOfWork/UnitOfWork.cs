@@ -44,6 +44,11 @@ namespace Data_Access_Layer.UnitOfWork
             }
         }
 
+        public void ClearTracking()
+        {
+            _sqlContext.ChangeTracker.Clear();
+        }
+
         public async Task SaveChangesAsync()
         {
             await _sqlContext.SaveChangesAsync();

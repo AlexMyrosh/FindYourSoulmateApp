@@ -6,23 +6,25 @@ using Presentation_Layer.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Business_Logic_Layer.Models;
+using Presentation_Layer.Constants;
 
 namespace Presentation_Layer.Controllers
 {
     public class SurveyController : Controller
     {
         private readonly ISurveyService _surveyService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
         private const int NumberOfInitialQuestions = 1;
         private const int NumberOfInitialOptions = 2;
 
-        public SurveyController(ISurveyService surveyService, IMapper mapper)
+        public SurveyController(ISurveyService surveyService, IMapper mapper, IUserService userService)
         {
             _surveyService = surveyService;
             _mapper = mapper;
+            _userService = userService;
         }
 
-        // GET: SurveyController
         public async Task<ActionResult> Index()
         {
             var models = await _surveyService.GetAllWithDetailsAsync();
@@ -30,7 +32,6 @@ namespace Presentation_Layer.Controllers
             return View(viewModels);
         }
 
-        // GET: SurveyController/Details/5
         public async Task<ActionResult> Details(Guid id)
         {
             var model = await _surveyService.GetByIdWithDetailsAsync(id);
@@ -38,7 +39,6 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // GET: SurveyController/Create
         public ActionResult Create()
         {
             var viewModel = new SurveyViewModel(NumberOfInitialQuestions);
@@ -46,7 +46,6 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // POST: SurveyController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(SurveyViewModel viewModel)
@@ -63,7 +62,6 @@ namespace Presentation_Layer.Controllers
             }
         }
 
-        // GET: SurveyController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
             var model = await _surveyService.GetByIdWithDetailsAsync(id);
@@ -71,7 +69,6 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // POST: SurveyController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(SurveyViewModel viewModel)
@@ -88,7 +85,6 @@ namespace Presentation_Layer.Controllers
             }
         }
 
-        // GET: SurveyController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
             var model = await _surveyService.GetByIdWithDetailsAsync(id);
@@ -96,7 +92,6 @@ namespace Presentation_Layer.Controllers
             return View(viewModel);
         }
 
-        // POST: SurveyController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Delete(SurveyViewModel viewModel)
@@ -133,25 +128,38 @@ namespace Presentation_Layer.Controllers
             return PartialView("PartialViews/_QuestionsPartial", viewModel);
         }
 
-        // POST: SurveyController/PassSurvey/5
         public async Task<ActionResult> PassSurvey(Guid id)
         {
-            var model = await _surveyService.GetByIdWithDetailsAsync(id);
-            var viewModel = _mapper.Map<SurveyViewModel>(model);
-            viewModel.User = new UserViewModel
+            var surveyModel = await _surveyService.GetByIdWithDetailsAsync(id);
+            var surveyViewModel = _mapper.Map<SurveyViewModel>(surveyModel);
+            surveyViewModel.Answers = new List<UserAnswerViewModel>(surveyViewModel.Questions.Count);
+            for (var i = 0; i < surveyViewModel.Questions.Count; i++)
             {
-                Answers = new List<string>(viewModel.Questions.Count)
-            };
-            for (int i = 0; i < viewModel.User.Answers.Capacity; i++)
-            {
-                viewModel.User.Answers.Add(string.Empty);
+                surveyViewModel.Answers.Add(new UserAnswerViewModel());
             }
-            return View(viewModel);
+            return View(surveyViewModel);
         }
 
         public async Task<ActionResult> SurveyProcessing(SurveyViewModel viewModel)
         {
-            return View(nameof(Index));
+            var currentUserModel = await _userService.GetOrCreateUserByIdAsync(GetUserId());
+            for (var i = 0; i < viewModel.Questions.Count; i++)
+            {
+                currentUserModel.Answers.Add(new UserAnswerModel
+                {
+                    Answer = viewModel.Answers[i].Answer,
+                    Question = _mapper.Map<QuestionModel>(viewModel.Questions[i])
+                });
+            }
+
+            await _userService.UpdateAsync(currentUserModel);
+            return RedirectToAction(nameof(Index));
+        }
+
+        private Guid GetUserId()
+        {
+            Guid.TryParse(HttpContext.Items[UserConstants.UserIdCookieKey].ToString(), out var id);
+            return id;
         }
     }
 }

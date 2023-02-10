@@ -11,6 +11,8 @@ namespace Data_Access_Layer.Models
 
         public string Description { get; set; }
 
+        public DateTime StopDateTime { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public IEnumerable<Question> Questions { get; set; }

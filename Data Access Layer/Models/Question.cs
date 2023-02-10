@@ -16,5 +16,7 @@ namespace Data_Access_Layer.Models
         public Survey Survey { get; set; }
 
         public IEnumerable<AnswerOption> Options { get; set; }
+
+        public IEnumerable<UserAnswer> UserAnswers { get; set; }
     }
 }

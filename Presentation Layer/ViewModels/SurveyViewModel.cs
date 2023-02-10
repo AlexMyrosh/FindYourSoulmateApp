@@ -23,10 +23,12 @@ namespace Presentation_Layer.ViewModels
 
         public string Description { get; set; }
 
+        public DateTime StopDateTime { get; set; }
+
         public bool IsDeleted { get; set; }
 
-        public UserViewModel User { get; set; }
-
         public List<QuestionViewModel> Questions { get; set; }
+
+        public List<UserAnswerViewModel> Answers { get; set; }
     }
 }
