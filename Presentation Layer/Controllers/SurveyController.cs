@@ -153,6 +153,13 @@ namespace Presentation_Layer.Controllers
             }
 
             await _userService.UpdateAsync(currentUserModel);
+            //var result = await _surveyService.AnswerProcessing(viewModel.Id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> SurveyProcess(Guid id)
+        {
+            var result = await _surveyService.AnswerProcessing(id);
             return RedirectToAction(nameof(Index));
         }
 

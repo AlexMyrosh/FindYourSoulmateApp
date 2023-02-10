@@ -22,5 +22,7 @@ namespace Business_Logic_Layer.Services.Interfaces
         public Task<List<SurveyModel>> GetAllAsync(bool includeDeleted = false);
 
         public Task<List<SurveyModel>> GetAllWithDetailsAsync(bool includeDeleted = false);
+
+        public Task<List<Dictionary<Guid, double>>> AnswerProcessing(Guid surveyId);
     }
 }

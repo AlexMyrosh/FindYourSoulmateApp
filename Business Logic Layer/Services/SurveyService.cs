@@ -5,6 +5,7 @@ using Data_Access_Layer.Models;
 using Data_Access_Layer.UnitOfWork;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Business_Logic_Layer.Services
@@ -73,6 +74,59 @@ namespace Business_Logic_Layer.Services
             var entity = _mapper.Map<Survey>(model);
             _unitOfWork.SurveyRepository.Update(entity);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<List<Dictionary<Guid, double>>> AnswerProcessing(Guid surveyId)
+        {
+            var surveyModel = await GetByIdWithDetailsAsync(surveyId);
+            var userModels = _mapper.Map<List<UserModel>>(await _unitOfWork.UserRepository.GetAllWithDetailsAsync());
+
+            var usersScore = new double[userModels.Count, userModels.Count, surveyModel.Questions.Count];
+            var scoresSummary = new double[userModels.Count, userModels.Count];
+            for (var currentUserIndex = 0; currentUserIndex < userModels.Count; currentUserIndex++)
+            {
+                for (var comparableUserIndex = 0; comparableUserIndex < userModels.Count; comparableUserIndex++)
+                {
+                    for (var questionIndex = 0; questionIndex < surveyModel.Questions.Count; questionIndex++)
+                    {
+                        if (currentUserIndex == comparableUserIndex)
+                        {
+                            usersScore[currentUserIndex, comparableUserIndex, questionIndex] = -1;
+                        }
+                        else if (userModels[currentUserIndex].Answers[questionIndex].Answer ==
+                                 userModels[comparableUserIndex].Answers[questionIndex].Answer)
+                        {
+                            usersScore[currentUserIndex, comparableUserIndex, questionIndex] =
+                                surveyModel.Questions[questionIndex].Coefficient;
+                        }
+
+                        scoresSummary[currentUserIndex, comparableUserIndex] +=
+                            usersScore[currentUserIndex, comparableUserIndex, questionIndex];
+                    }
+                }
+            }
+
+            var usersCompatibility = new List<Dictionary<Guid, double>>();
+
+            for (var currentUserIndex = 0; currentUserIndex < userModels.Count; currentUserIndex++)
+            {
+                var tempDictionary = new Dictionary<Guid, double>();
+                for (var comparableUserIndex = 0; comparableUserIndex < userModels.Count; comparableUserIndex++)
+                {
+                    tempDictionary.Add(userModels[comparableUserIndex].Id,
+                        scoresSummary[currentUserIndex, comparableUserIndex]);
+                }
+
+                usersCompatibility.Add(tempDictionary);
+            }
+
+            for (var i = 0; i < usersCompatibility.Count; i++)
+            {
+                usersCompatibility[i] = usersCompatibility[i].OrderByDescending(x => x.Value)
+                    .ToDictionary(y => y.Key, y => y.Value);
+            }
+
+            return usersCompatibility;
         }
     }
 }
