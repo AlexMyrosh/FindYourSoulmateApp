@@ -15,13 +15,14 @@
     @for (var j = 0; j < Model.Questions[i].Options.Count; j++)
     {
         <div class="form-check">
-            @Html.RadioButtonFor(model => model.User.Answers[i].Answer,
+            @Html.RadioButtonFor(model => model.Answers[i].Answer,
                 Model.Questions[i].Options[j].OptionText, new { @class = "form-check-input", name = $"Question_{i + 1}", id = $"Question_{i + 1}_Option_{j + 1}" })
 
             @Html.Label(Model.Questions[i].Options[j].OptionText, null, new { @class = "form-check-label", @for = $"Question_{i + 1}_Option_{j + 1}" })
         </div>
     }
     <br/>
+    @Html.HiddenFor(model=>Model.Questions[i].Id)
 }
     <div class="form-group">
         <input type="submit" value="Відправити" class="btn btn-primary"/>

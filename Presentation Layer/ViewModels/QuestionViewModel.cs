@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Business_Logic_Layer.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Presentation_Layer.ViewModels
@@ -23,6 +24,10 @@ namespace Presentation_Layer.ViewModels
         public double Coefficient { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public SurveyViewModel Survey { get; set; }
+
+        public List<UserAnswerViewModel> UserAnswers { get; set; }
 
         public List<AnswerOptionViewModel> Options { get; set; }
     }

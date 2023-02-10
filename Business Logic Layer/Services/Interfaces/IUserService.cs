@@ -22,5 +22,7 @@ namespace Business_Logic_Layer.Services.Interfaces
         public Task<List<UserModel>> GetAllAsync(bool includeDeleted = false);
 
         public Task<List<UserModel>> GetAllWithDetailsAsync(bool includeDeleted = false);
+
+        public Task<UserModel> GetOrCreateUserByIdAsync(Guid id);
     }
 }

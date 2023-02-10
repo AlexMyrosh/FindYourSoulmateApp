@@ -44,6 +44,9 @@ namespace Data_Access_Layer.Repositories
         {
             return await _sqlContext.Questions
                 .Include(entity => entity.Options)
+                .Include(entity => entity.Survey)
+                .Include(entity => entity.UserAnswers)
+                .ThenInclude(answer => answer.User)
                 .Where(entity => entity.IsDeleted == false || entity.IsDeleted == includeDeleted)
                 .ToListAsync();
         }
@@ -59,6 +62,9 @@ namespace Data_Access_Layer.Repositories
         {
             return await _sqlContext.Questions
                 .Include(entity => entity.Options)
+                .Include(entity => entity.Survey)
+                .Include(entity => entity.UserAnswers)
+                .ThenInclude(answer => answer.User)
                 .Where(entity => entity.Id == id)
                 .FirstOrDefaultAsync();
         }

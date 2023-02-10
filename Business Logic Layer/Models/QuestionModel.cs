@@ -13,6 +13,10 @@ namespace Business_Logic_Layer.Models
 
         public bool IsDeleted { get; set; }
 
-        public IEnumerable<AnswerOptionModel> Options { get; set; }
+        public SurveyModel Survey { get; set; }
+
+        public List<UserAnswerModel> UserAnswers { get; set; }
+
+        public List<AnswerOptionModel> Options { get; set; }
     }
 }

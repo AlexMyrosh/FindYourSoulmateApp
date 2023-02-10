@@ -7,7 +7,7 @@ namespace Data_Access_Layer.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        public Task AddAsync(User entity);
+        public Task<User> AddAsync(User entity);
 
         public void Update(User entity);
 

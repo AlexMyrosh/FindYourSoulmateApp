@@ -11,6 +11,8 @@ namespace Data_Access_Layer.UnitOfWork
 
         public IUserRepository UserRepository { get; }
 
+        public void ClearTracking();
+
         public Task SaveChangesAsync();
     }
 }

@@ -68,9 +68,26 @@ namespace Business_Logic_Layer.Services
             return model;
         }
 
+        public async Task<UserModel> GetOrCreateUserByIdAsync(Guid id)
+        {
+            var entity = await _unitOfWork.UserRepository.GetByIdAsync(id);
+            entity ??= await _unitOfWork.UserRepository.AddAsync(new User
+                {
+                    Id = id
+                });
+
+            var model = _mapper.Map<UserModel>(entity);
+            return model;
+        }
+
         public async Task UpdateAsync(UserModel model)
         {
             var entity = _mapper.Map<User>(model);
+            foreach (var entityAnswer in entity.Answers)
+            {
+                entityAnswer.Question = await _unitOfWork.QuestionRepository.GetByIdAsync(entityAnswer.Question.Id);
+            }
+            _unitOfWork.ClearTracking();
             _unitOfWork.UserRepository.Update(entity);
             await _unitOfWork.SaveChangesAsync();
         }

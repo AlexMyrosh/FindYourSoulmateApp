@@ -6,10 +6,10 @@ namespace Data_Access_Layer.Models
     {
         public Guid Id { get; set; }
 
+        public string Answer { get; set; }
+
         public User User { get; set; }
 
         public Question Question { get; set; }
-
-        public string Answer { get; set; }
     }
 }

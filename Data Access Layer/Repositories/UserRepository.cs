@@ -18,9 +18,9 @@ namespace Data_Access_Layer.Repositories
             _sqlContext = sqlContext;
         }
 
-        public async Task AddAsync(User entity)
+        public async Task<User> AddAsync(User entity)
         {
-            await _sqlContext.Users.AddAsync(entity);
+            return (await _sqlContext.Users.AddAsync(entity)).Entity;
         }
 
         public void DeletePermanently(User entity)
@@ -44,6 +44,7 @@ namespace Data_Access_Layer.Repositories
         {
             return await _sqlContext.Users
                 .Include(entity => entity.Answers)
+                .ThenInclude(answer => answer.Question)
                 .Where(entity => entity.IsDeleted == false || entity.IsDeleted == includeDeleted)
                 .ToListAsync();
         }
@@ -59,6 +60,7 @@ namespace Data_Access_Layer.Repositories
         {
             return await _sqlContext.Users
                 .Include(entity => entity.Answers)
+                .ThenInclude(answer => answer.Question)
                 .Where(entity => entity.Id == id)
                 .FirstOrDefaultAsync();
         }
