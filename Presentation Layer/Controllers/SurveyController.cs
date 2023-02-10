@@ -159,7 +159,7 @@ namespace Presentation_Layer.Controllers
 
         public async Task<ActionResult> SurveyProcess(Guid id)
         {
-            var result = await _surveyService.AnswerProcessing(id);
+            await _surveyService.AnswerProcessing(id);
             return RedirectToAction(nameof(Index));
         }
 

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 
 namespace Business_Logic_Layer.Services
 {
@@ -76,7 +77,19 @@ namespace Business_Logic_Layer.Services
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task<List<Dictionary<Guid, double>>> AnswerProcessing(Guid surveyId)
+        public async Task AnswerProcessing(Guid surveyId)
+        {
+            var matches = await GetMatches(surveyId);
+            var survey = await _unitOfWork.SurveyRepository.GetByIdAsync(surveyId);
+            BackgroundJob.Schedule(() => SendEmailsWithResult(matches), survey.StopDateTime - DateTime.Now);
+        }
+
+        public async Task SendEmailsWithResult(List<Dictionary<Guid, double>> matches)
+        {
+
+        }
+
+        private async Task<List<Dictionary<Guid, double>>> GetMatches(Guid surveyId)
         {
             var surveyModel = await GetByIdWithDetailsAsync(surveyId);
             var userModels = _mapper.Map<List<UserModel>>(await _unitOfWork.UserRepository.GetAllWithDetailsAsync());
@@ -93,8 +106,8 @@ namespace Business_Logic_Layer.Services
                         {
                             usersScore[currentUserIndex, comparableUserIndex, questionIndex] = -1;
                         }
-                        else if (userModels[currentUserIndex].Answers[questionIndex].Answer ==
-                                 userModels[comparableUserIndex].Answers[questionIndex].Answer)
+                        else if (userModels[currentUserIndex].Answers[questionIndex].Id ==
+                                 userModels[comparableUserIndex].Answers[questionIndex].Id)
                         {
                             usersScore[currentUserIndex, comparableUserIndex, questionIndex] =
                                 surveyModel.Questions[questionIndex].Coefficient;
