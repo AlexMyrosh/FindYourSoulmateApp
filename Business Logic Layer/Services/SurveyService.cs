@@ -15,11 +15,13 @@ namespace Business_Logic_Layer.Services
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailService _emailService;
 
-        public SurveyService(IUnitOfWork unitOfWork, IMapper mapper)
+        public SurveyService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
         public async Task AddAsync(SurveyModel model)
@@ -81,15 +83,33 @@ namespace Business_Logic_Layer.Services
         {
             var matches = await GetMatches(surveyId);
             var survey = await _unitOfWork.SurveyRepository.GetByIdAsync(surveyId);
-            BackgroundJob.Schedule(() => SendEmailsWithResult(matches), survey.StopDateTime - DateTime.Now);
+            foreach (var match in matches)
+            {
+                match.ForEach(x=>x.User.Answers = null);
+                match.ForEach(x => x.ComparableUser.Answers = null);
+                BackgroundJob.Schedule(() => SendEmailsWithResult(match), new TimeSpan(0, 0, 15));
+            }
         }
 
-        public async Task SendEmailsWithResult(List<Dictionary<Guid, double>> matches)
+        public async Task SendEmailsWithResult(List<UserScoreModel> match)
         {
-
+            await _emailService.SendEmailAsync(match.First().User, "Результат опитування від Св. Валентина", GetEmailMessage(match));
         }
 
-        private async Task<List<Dictionary<Guid, double>>> GetMatches(Guid surveyId)
+        private string GetEmailMessage(List<UserScoreModel> model)
+        {
+            var result = "Ваш список людей які найбліше вам підходять:</br>";
+            var peopleList = string.Empty;
+            for (int i = 0; i < model.Count; i++)
+            {
+                peopleList += $"{i + 1}. {model[i].ComparableUser.Name} ({model[i].ComparableUser.TelegramUsername})</br>";
+            }
+
+            result += peopleList;
+            return result;
+        }
+
+        private async Task<List<List<UserScoreModel>>> GetMatches(Guid surveyId)
         {
             var surveyModel = await GetByIdWithDetailsAsync(surveyId);
             var userModels = _mapper.Map<List<UserModel>>(await _unitOfWork.UserRepository.GetAllWithDetailsAsync());
@@ -106,8 +126,8 @@ namespace Business_Logic_Layer.Services
                         {
                             usersScore[currentUserIndex, comparableUserIndex, questionIndex] = -1;
                         }
-                        else if (userModels[currentUserIndex].Answers[questionIndex].Id ==
-                                 userModels[comparableUserIndex].Answers[questionIndex].Id)
+                        else if (userModels[currentUserIndex].Answers[questionIndex].Answer ==
+                                 userModels[comparableUserIndex].Answers[questionIndex].Answer)
                         {
                             usersScore[currentUserIndex, comparableUserIndex, questionIndex] =
                                 surveyModel.Questions[questionIndex].Coefficient;
@@ -119,15 +139,19 @@ namespace Business_Logic_Layer.Services
                 }
             }
 
-            var usersCompatibility = new List<Dictionary<Guid, double>>();
+            var usersCompatibility = new List<List<UserScoreModel>>();
 
             for (var currentUserIndex = 0; currentUserIndex < userModels.Count; currentUserIndex++)
             {
-                var tempDictionary = new Dictionary<Guid, double>();
+                var tempDictionary = new List<UserScoreModel>();
                 for (var comparableUserIndex = 0; comparableUserIndex < userModels.Count; comparableUserIndex++)
                 {
-                    tempDictionary.Add(userModels[comparableUserIndex].Id,
-                        scoresSummary[currentUserIndex, comparableUserIndex]);
+                    tempDictionary.Add(new UserScoreModel
+                    {
+                        User = userModels[currentUserIndex],
+                        Score = scoresSummary[currentUserIndex, comparableUserIndex],
+                        ComparableUser = userModels[comparableUserIndex]
+                    });
                 }
 
                 usersCompatibility.Add(tempDictionary);
@@ -135,8 +159,7 @@ namespace Business_Logic_Layer.Services
 
             for (var i = 0; i < usersCompatibility.Count; i++)
             {
-                usersCompatibility[i] = usersCompatibility[i].OrderByDescending(x => x.Value)
-                    .ToDictionary(y => y.Key, y => y.Value);
+                usersCompatibility[i] = usersCompatibility[i].OrderByDescending(x => x.Score).ToList();
             }
 
             return usersCompatibility;
