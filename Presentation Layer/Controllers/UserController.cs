@@ -39,7 +39,7 @@ namespace Presentation_Layer.Controllers
         private async Task<UserViewModel> GetCurrentUserAsync()
         {
             var currentUserId = GetUserId();
-            var userModel = await _userService.GetByIdAsync(currentUserId);
+            var userModel = await _userService.GetOrCreateUserByIdAsync(currentUserId);
             return _mapper.Map<UserViewModel>(userModel);
         }
 
