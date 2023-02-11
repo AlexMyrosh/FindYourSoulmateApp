@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Presentation_Layer.ViewModels
 {
@@ -19,10 +20,15 @@ namespace Presentation_Layer.ViewModels
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
+        [Required(ErrorMessage = "Назва опитування є обов'язковою")]
+        [MaxLength(100, ErrorMessage = "Максимальний обсяг назви - 100 символів")]
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Опис опитування є обов'язковим")]
+        [MaxLength(500, ErrorMessage = "Максимальний обсяг опису - 500 символів")]
         public string Description { get; set; }
 
+        [Required(ErrorMessage = "Кінцевий час опитування є обов'язковим")]
         public DateTime StopDateTime { get; set; }
 
         public bool IsDeleted { get; set; }

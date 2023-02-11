@@ -109,5 +109,20 @@ namespace Business_Logic_Layer.Services
             _unitOfWork.UserRepository.Update(entity);
             await _unitOfWork.SaveChangesAsync();
         }
+
+        public async Task UpdateAnswers(UserModel model)
+        {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
+            var entity = _mapper.Map<User>(model);
+            _unitOfWork.ClearTracking();
+            foreach (var entityAnswer in entity.Answers)
+            {
+                entityAnswer.UserId = entity.Id;
+                entityAnswer.Question = null;
+            }
+            _unitOfWork.UserRepository.UpdateAnswers(entity.Answers);
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
 }

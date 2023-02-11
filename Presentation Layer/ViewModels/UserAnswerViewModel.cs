@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Presentation_Layer.ViewModels
 {
@@ -6,6 +7,7 @@ namespace Presentation_Layer.ViewModels
     {
         public Guid Id { get; set; }
 
+        [Required(ErrorMessage = "Питання є обов'язковим")]
         public string Answer { get; set; }
 
         public UserViewModel User { get; set; }

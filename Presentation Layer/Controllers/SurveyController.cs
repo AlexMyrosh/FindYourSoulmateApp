@@ -140,9 +140,25 @@ namespace Presentation_Layer.Controllers
             return View(surveyViewModel);
         }
 
-        public async Task<ActionResult> SurveyProcessing(SurveyViewModel viewModel)
+        [HttpPost]
+        public async Task<ActionResult> ThankYouPage(SurveyViewModel viewModel)
         {
-            var currentUserModel = await _userService.GetOrCreateUserByIdAsync(GetUserId());
+            if (viewModel.Answers.Count < viewModel.Questions.Count)
+            {
+                ModelState.AddModelError("LackOfAnswers", "Не всі питання мають відповідь");
+
+                var surveyModel = await _surveyService.GetByIdWithDetailsAsync(viewModel.Id);
+                viewModel = _mapper.Map<SurveyViewModel>(surveyModel);
+                viewModel.Answers = new List<UserAnswerViewModel>(viewModel.Questions.Count);
+                for (var i = 0; i < viewModel.Questions.Count; i++)
+                {
+                    viewModel.Answers.Add(new UserAnswerViewModel());
+                }
+
+                return View("PassSurvey", viewModel);
+            }
+
+            var currentUserModel = await _userService.GetByIdAsync(GetUserId());
             for (var i = 0; i < viewModel.Questions.Count; i++)
             {
                 currentUserModel.Answers.Add(new UserAnswerModel
@@ -152,19 +168,8 @@ namespace Presentation_Layer.Controllers
                 });
             }
 
-            await _userService.UpdateAsync(currentUserModel);
-            //var result = await _surveyService.AnswerProcessing(viewModel.Id);
-            return RedirectToAction(nameof(Index));
-        }
+            await _userService.UpdateAnswers(currentUserModel);
 
-        public async Task<ActionResult> SurveyProcess(Guid id)
-        {
-            await _surveyService.AnswerProcessing(id);
-            return RedirectToAction(nameof(Index));
-        }
-
-        public ActionResult ThankYouPage()
-        {
             return View();
         }
 
