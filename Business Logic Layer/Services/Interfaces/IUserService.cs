@@ -11,6 +11,8 @@ namespace Business_Logic_Layer.Services.Interfaces
 
         public Task UpdateAsync(UserModel model);
 
+        public Task UpdateAnswers(UserModel model);
+
         public Task DeletePermanentlyAsync(UserModel model);
 
         public Task DeleteTemporarilyAsync(Guid id);

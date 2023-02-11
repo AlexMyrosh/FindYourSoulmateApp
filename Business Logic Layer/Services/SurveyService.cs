@@ -27,6 +27,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task AddAsync(SurveyModel model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
             var entity = _mapper.Map<Survey>(model);
             await _unitOfWork.SurveyRepository.AddAsync(entity);
             await _unitOfWork.SaveChangesAsync();
@@ -34,6 +36,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task DeletePermanentlyAsync(SurveyModel model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
             var entity = _mapper.Map<Survey>(model);
             _unitOfWork.SurveyRepository.DeletePermanently(entity);
             await _unitOfWork.SaveChangesAsync();
@@ -41,6 +45,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task DeleteTemporarilyAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             await _unitOfWork.SurveyRepository.DeleteTemporarilyAsync(id);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -61,6 +67,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task<SurveyModel> GetByIdAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             var entity = await _unitOfWork.SurveyRepository.GetByIdAsync(id);
             var model = _mapper.Map<SurveyModel>(entity);
             return model;
@@ -68,6 +76,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task<SurveyModel> GetByIdWithDetailsAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             var entity = await _unitOfWork.SurveyRepository.GetByIdWithDetailsAsync(id);
             var model = _mapper.Map<SurveyModel>(entity);
             return model;
@@ -75,6 +85,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task UpdateAsync(SurveyModel model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
             var entity = _mapper.Map<Survey>(model);
             _unitOfWork.SurveyRepository.Update(entity);
             await _unitOfWork.SaveChangesAsync();
@@ -82,6 +94,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task AnswerProcessing(Guid surveyId)
         {
+            if (surveyId == Guid.Empty) throw new ArgumentException($"{nameof(surveyId)} is empty");
+
             var matches = await GetMatches(surveyId);
             foreach (var match in matches)
             {

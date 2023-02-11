@@ -69,5 +69,10 @@ namespace Data_Access_Layer.Repositories
         {
             _sqlContext.Users.Update(entity);
         }
+
+        public void UpdateAnswers(IEnumerable<UserAnswer> answers)
+        {
+            _sqlContext.UserAnswers.UpdateRange(answers);
+        }
     }
 }

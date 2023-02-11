@@ -11,6 +11,8 @@ namespace Data_Access_Layer.Repositories.Interfaces
 
         public void Update(User entity);
 
+        public void UpdateAnswers(IEnumerable<UserAnswer> answers);
+
         public void DeletePermanently(User entity);
 
         public Task DeleteTemporarilyAsync(Guid id);

@@ -22,6 +22,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task AddAsync(UserModel model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
             var entity = _mapper.Map<User>(model);
             await _unitOfWork.UserRepository.AddAsync(entity);
             await _unitOfWork.SaveChangesAsync();
@@ -29,6 +31,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task DeletePermanentlyAsync(UserModel model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
             var entity = _mapper.Map<User>(model);
             _unitOfWork.UserRepository.DeletePermanently(entity);
             await _unitOfWork.SaveChangesAsync();
@@ -36,6 +40,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task DeleteTemporarilyAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             await _unitOfWork.UserRepository.DeleteTemporarilyAsync(id);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -56,6 +62,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task<UserModel> GetByIdAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             var entity = await _unitOfWork.UserRepository.GetByIdAsync(id);
             var model = _mapper.Map<UserModel>(entity);
             return model;
@@ -63,6 +71,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task<UserModel> GetByIdWithDetailsAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             var entity = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(id);
             var model = _mapper.Map<UserModel>(entity);
             return model;
@@ -70,6 +80,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task<UserModel> GetOrCreateUserByIdAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             var entity = await _unitOfWork.UserRepository.GetByIdAsync(id);
             if (entity == null)
             {
@@ -86,6 +98,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task UpdateAsync(UserModel model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
             var entity = _mapper.Map<User>(model);
             foreach (var entityAnswer in entity.Answers)
             {
@@ -93,6 +107,21 @@ namespace Business_Logic_Layer.Services
             }
             _unitOfWork.ClearTracking();
             _unitOfWork.UserRepository.Update(entity);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task UpdateAnswers(UserModel model)
+        {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
+            var entity = _mapper.Map<User>(model);
+            _unitOfWork.ClearTracking();
+            foreach (var entityAnswer in entity.Answers)
+            {
+                entityAnswer.UserId = entity.Id;
+                entityAnswer.Question = null;
+            }
+            _unitOfWork.UserRepository.UpdateAnswers(entity.Answers);
             await _unitOfWork.SaveChangesAsync();
         }
     }

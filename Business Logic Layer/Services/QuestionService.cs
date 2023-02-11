@@ -22,6 +22,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task AddAsync(QuestionModel model)
         {
+            if(model == null) throw new ArgumentNullException(nameof(model));
+
             var entity = _mapper.Map<Question>(model);
             await _unitOfWork.QuestionRepository.AddAsync(entity);
             await _unitOfWork.SaveChangesAsync();
@@ -29,6 +31,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task DeletePermanentlyAsync(QuestionModel model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
             var entity = _mapper.Map<Question>(model);
             _unitOfWork.QuestionRepository.DeletePermanently(entity);
             await _unitOfWork.SaveChangesAsync();
@@ -36,6 +40,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task DeleteTemporarilyAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             await _unitOfWork.QuestionRepository.DeleteTemporarilyAsync(id);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -56,6 +62,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task<QuestionModel> GetByIdAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             var entity = await _unitOfWork.QuestionRepository.GetByIdAsync(id);
             var model = _mapper.Map<QuestionModel>(entity);
             return model;
@@ -63,6 +71,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task<QuestionModel> GetByIdWithDetailsAsync(Guid id)
         {
+            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+
             var entity = await _unitOfWork.QuestionRepository.GetByIdWithDetailsAsync(id);
             var model = _mapper.Map<QuestionModel>(entity);
             return model;
@@ -70,6 +80,8 @@ namespace Business_Logic_Layer.Services
 
         public async Task UpdateAsync(QuestionModel model)
         {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
             var entity = _mapper.Map<Question>(model);
             _unitOfWork.QuestionRepository.Update(entity);
             await _unitOfWork.SaveChangesAsync();
