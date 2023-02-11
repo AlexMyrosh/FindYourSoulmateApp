@@ -163,6 +163,11 @@ namespace Presentation_Layer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public ActionResult ThankYouPage()
+        {
+            return View();
+        }
+
         private Guid GetUserId()
         {
             Guid.TryParse(HttpContext.Items[UserConstants.UserIdCookieKey].ToString(), out var id);

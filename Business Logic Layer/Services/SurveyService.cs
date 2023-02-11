@@ -16,6 +16,7 @@ namespace Business_Logic_Layer.Services
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailService _emailService;
+        private const int MaxPeopleToSelect = 5;
 
         public SurveyService(IUnitOfWork unitOfWork, IMapper mapper, IEmailService emailService)
         {
@@ -82,7 +83,6 @@ namespace Business_Logic_Layer.Services
         public async Task AnswerProcessing(Guid surveyId)
         {
             var matches = await GetMatches(surveyId);
-            var survey = await _unitOfWork.SurveyRepository.GetByIdAsync(surveyId);
             foreach (var match in matches)
             {
                 match.ForEach(x=>x.User.Answers = null);
@@ -100,7 +100,7 @@ namespace Business_Logic_Layer.Services
         {
             var result = "Ваш список людей які найбліше вам підходять:</br>";
             var peopleList = string.Empty;
-            for (int i = 0; i < model.Count; i++)
+            for (int i = 0; i < MaxPeopleToSelect || i < model.Count - 1; i++)
             {
                 peopleList += $"{i + 1}. {model[i].ComparableUser.Name} ({model[i].ComparableUser.TelegramUsername})</br>";
             }

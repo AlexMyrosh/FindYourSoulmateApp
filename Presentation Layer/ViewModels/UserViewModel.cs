@@ -20,6 +20,8 @@ namespace Presentation_Layer.ViewModels
 
         public string Email { get; set; }
 
+        public Guid LastSurveyPass { get; set; }
+
         public bool IsDeleted { get; set; }
 
         public List<UserAnswerViewModel> Answers { get; set; }
