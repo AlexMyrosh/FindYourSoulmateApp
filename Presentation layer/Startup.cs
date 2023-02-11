@@ -85,7 +85,7 @@ namespace Presentation_Layer
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=Survey}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=User}/{action=Edit}/{surveyId=5012A854-5977-44FD-B915-C31DFF642242}");
             });
         }
     }
