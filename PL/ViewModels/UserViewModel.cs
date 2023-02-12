@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Presentation_Layer.ViewModels
+namespace PL.ViewModels
 {
     public class UserViewModel
     {

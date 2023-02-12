@@ -1,7 +1,7 @@
-﻿using Data_Access_Layer.Repositories.Interfaces;
+﻿using DAL.Repositories.Interfaces;
 using System.Threading.Tasks;
 
-namespace Data_Access_Layer.UnitOfWork
+namespace DAL.UnitOfWork
 {
     public interface IUnitOfWork
     {

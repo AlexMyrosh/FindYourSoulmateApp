@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Business_Logic_Layer.Models;
-using Business_Logic_Layer.Services.Interfaces;
+using BLL.Models;
+using BLL.Services.Interfaces;
 using MimeKit;
 using MailKit.Net.Smtp;
 
-namespace Business_Logic_Layer.Services
+namespace BLL.Services
 {
     public class EmailService : IEmailService
     {

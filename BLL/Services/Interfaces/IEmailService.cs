@@ -1,7 +1,7 @@
-﻿using Business_Logic_Layer.Models;
+﻿using BLL.Models;
 using System.Threading.Tasks;
 
-namespace Business_Logic_Layer.Services.Interfaces
+namespace BLL.Services.Interfaces
 {
     public interface IEmailService
     {

@@ -1,9 +1,9 @@
-﻿using Business_Logic_Layer.Models;
+﻿using BLL.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Presentation_Layer.ViewModels
+namespace PL.ViewModels
 {
     public class QuestionViewModel
     {

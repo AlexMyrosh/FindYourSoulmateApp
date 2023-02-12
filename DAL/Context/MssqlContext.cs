@@ -1,8 +1,8 @@
 ﻿using System;
-using Data_Access_Layer.Models;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Data_Access_Layer.Context
+namespace DAL.Context
 {
     public class MssqlContext : DbContext
     {

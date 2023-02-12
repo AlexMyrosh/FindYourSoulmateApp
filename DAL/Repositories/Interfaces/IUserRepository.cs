@@ -1,9 +1,9 @@
-﻿using Data_Access_Layer.Models;
+﻿using DAL.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
 
-namespace Data_Access_Layer.Repositories.Interfaces
+namespace DAL.Repositories.Interfaces
 {
     public interface IUserRepository
     {

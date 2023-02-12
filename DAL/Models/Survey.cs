@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Data_Access_Layer.Models
+namespace DAL.Models
 {
     public class Survey
     {

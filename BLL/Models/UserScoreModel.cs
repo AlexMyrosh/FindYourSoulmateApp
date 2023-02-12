@@ -1,4 +1,4 @@
-﻿namespace Business_Logic_Layer.Models
+﻿namespace BLL.Models
 {
     public class UserScoreModel
     {

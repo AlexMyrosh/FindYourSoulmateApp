@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System;
-using Presentation_Layer.Constants;
+using PL.Constants;
 
-namespace Presentation_Layer.MiddleWares
+namespace PL.MiddleWares
 {
     public class UserIdCookiesMiddleware : IMiddleware
     {

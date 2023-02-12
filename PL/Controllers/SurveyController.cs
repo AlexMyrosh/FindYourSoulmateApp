@@ -1,14 +1,14 @@
 ﻿using System;
 using AutoMapper;
-using Business_Logic_Layer.Services.Interfaces;
+using BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Presentation_Layer.ViewModels;
+using PL.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Business_Logic_Layer.Models;
-using Presentation_Layer.Constants;
+using BLL.Models;
+using PL.Constants;
 
-namespace Presentation_Layer.Controllers
+namespace PL.Controllers
 {
     public class SurveyController : Controller
     {

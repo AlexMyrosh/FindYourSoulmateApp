@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Business_Logic_Layer.Models;
-using Data_Access_Layer.Models;
+using BLL.Models;
+using DAL.Models;
 
-namespace Business_Logic_Layer.AutoMapper
+namespace BLL.AutoMapper
 {
     public class ModelsToEntityAutoMapper : Profile
     {

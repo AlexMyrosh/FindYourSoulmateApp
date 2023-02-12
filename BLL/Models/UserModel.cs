@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Business_Logic_Layer.Models
+namespace BLL.Models
 {
     public class UserModel
     {

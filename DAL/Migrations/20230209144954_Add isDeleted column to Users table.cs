@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Data_Access_Layer.Migrations
+namespace DAL.Migrations
 {
     public partial class AddisDeletedcolumntoUserstable : Migration
     {

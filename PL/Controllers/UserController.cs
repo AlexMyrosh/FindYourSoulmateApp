@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Business_Logic_Layer.Services.Interfaces;
+using BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Presentation_Layer.Constants;
-using Presentation_Layer.ViewModels;
+using PL.Constants;
+using PL.ViewModels;
 using System;
 using System.Threading.Tasks;
-using Business_Logic_Layer.Models;
+using BLL.Models;
 
-namespace Presentation_Layer.Controllers
+namespace PL.Controllers
 {
     public class UserController : Controller
     {

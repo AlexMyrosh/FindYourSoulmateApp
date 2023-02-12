@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Business_Logic_Layer.Models;
-using Business_Logic_Layer.Services.Interfaces;
-using Data_Access_Layer.Models;
-using Data_Access_Layer.UnitOfWork;
+using BLL.Models;
+using BLL.Services.Interfaces;
+using DAL.Models;
+using DAL.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Business_Logic_Layer.Services
+namespace BLL.Services
 {
     public class UserService : IUserService
     {

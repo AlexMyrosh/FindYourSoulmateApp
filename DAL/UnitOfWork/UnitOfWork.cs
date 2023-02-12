@@ -1,9 +1,9 @@
-﻿using Data_Access_Layer.Context;
-using Data_Access_Layer.Repositories;
-using Data_Access_Layer.Repositories.Interfaces;
+﻿using DAL.Context;
+using DAL.Repositories;
+using DAL.Repositories.Interfaces;
 using System.Threading.Tasks;
 
-namespace Data_Access_Layer.UnitOfWork
+namespace DAL.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {

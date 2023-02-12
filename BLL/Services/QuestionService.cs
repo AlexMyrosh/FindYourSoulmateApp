@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
-using Business_Logic_Layer.Models;
-using Data_Access_Layer.Models;
-using Data_Access_Layer.UnitOfWork;
+using BLL.Models;
+using DAL.Models;
+using DAL.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Business_Logic_Layer.Services.Interfaces;
+using BLL.Services.Interfaces;
 
-namespace Business_Logic_Layer.Services
+namespace BLL.Services
 {
     public class QuestionService : IQuestionService
     {

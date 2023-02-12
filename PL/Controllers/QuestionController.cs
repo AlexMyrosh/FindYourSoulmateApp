@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Business_Logic_Layer.Models;
-using Business_Logic_Layer.Services.Interfaces;
-using Presentation_Layer.ViewModels;
+using BLL.Models;
+using BLL.Services.Interfaces;
+using PL.ViewModels;
 
-namespace Presentation_Layer.Controllers
+namespace PL.Controllers
 {
     public class QuestionController : Controller
     {

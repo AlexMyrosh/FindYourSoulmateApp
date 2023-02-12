@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
-using Business_Logic_Layer.Models;
+using BLL.Models;
 
-namespace Business_Logic_Layer.Services.Interfaces
+namespace BLL.Services.Interfaces
 {
     public interface IUserService
     {

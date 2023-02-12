@@ -1,4 +1,4 @@
-﻿namespace Presentation_Layer.Constants
+﻿namespace PL.Constants
 {
     public static class UserConstants
     {

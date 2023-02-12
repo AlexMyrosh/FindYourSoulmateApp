@@ -1,22 +1,22 @@
 using AutoMapper;
-using Business_Logic_Layer.AutoMapper;
-using Business_Logic_Layer.Services;
-using Business_Logic_Layer.Services.Interfaces;
-using Data_Access_Layer.Context;
-using Data_Access_Layer.Repositories;
-using Data_Access_Layer.Repositories.Interfaces;
-using Data_Access_Layer.UnitOfWork;
+using BLL.AutoMapper;
+using BLL.Services;
+using BLL.Services.Interfaces;
+using DAL.Context;
+using DAL.Repositories;
+using DAL.Repositories.Interfaces;
+using DAL.UnitOfWork;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Presentation_Layer.AutoMapper;
-using Presentation_Layer.MiddleWares;
+using PL.AutoMapper;
+using PL.MiddleWares;
 using Hangfire;
 
-namespace Presentation_Layer
+namespace PL
 {
     public class Startup
     {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Business_Logic_Layer.Models;
-using Presentation_Layer.ViewModels;
+using BLL.Models;
+using PL.ViewModels;
 
-namespace Presentation_Layer.AutoMapper
+namespace PL.AutoMapper
 {
     public class ModelsToViewModelsAutoMapper : Profile
     {
