@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace BLL.Models
+﻿namespace BLL.Models
 {
     public class SurveyModel
     {

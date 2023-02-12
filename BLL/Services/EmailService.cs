@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using BLL.Models;
+﻿using BLL.Models;
 using BLL.Services.Interfaces;
 using MimeKit;
 using MailKit.Net.Smtp;

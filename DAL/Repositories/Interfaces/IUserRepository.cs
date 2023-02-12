@@ -1,7 +1,4 @@
 ﻿using DAL.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
 
 namespace DAL.Repositories.Interfaces
 {

@@ -1,7 +1,4 @@
 ﻿using BLL.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
 
 namespace BLL.Services.Interfaces
 {

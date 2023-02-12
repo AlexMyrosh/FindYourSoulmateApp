@@ -3,10 +3,6 @@ using BLL.Models;
 using BLL.Services.Interfaces;
 using DAL.Models;
 using DAL.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Hangfire;
 
 namespace BLL.Services

@@ -3,9 +3,6 @@ using BLL.Models;
 using BLL.Services.Interfaces;
 using DAL.Models;
 using DAL.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {

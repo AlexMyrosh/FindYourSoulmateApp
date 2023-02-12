@@ -2,9 +2,6 @@
 using BLL.Models;
 using DAL.Models;
 using DAL.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using BLL.Services.Interfaces;
 
 namespace BLL.Services

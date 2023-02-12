@@ -1,10 +1,7 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using PL.ViewModels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using BLL.Models;
 using PL.Constants;
 

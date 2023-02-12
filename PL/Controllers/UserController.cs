@@ -3,8 +3,6 @@ using BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using PL.Constants;
 using PL.ViewModels;
-using System;
-using System.Threading.Tasks;
 using BLL.Models;
 
 namespace PL.Controllers
