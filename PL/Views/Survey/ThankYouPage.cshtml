@@ -1,11 +1,22 @@
-﻿@model IEnumerable<PL.ViewModels.SurveyViewModel>
+﻿@model PL.ViewModels.SurveyViewModel
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Дякую за проходження цього опитування</h1>
-<h3>Результат прийде на вашу скриньку сьогодні опівночі</h3>
+<h1 class="text-center">Дякую за виділений час</h1>
+<h3 class="text-center">Результат прийде на вашу скриньку, після завершення опитування (@Model.StopDateTime)</h3>
+<hr/>
 
-@Html.ActionLink("Повернутися на головну сторінку", "Index", "Survey")
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+            @Html.ActionLink("Повернутися на головну сторінку", "Index", "Survey", null,new {@class="btn btn-primary btn-lg btn-block", role="button"})
+        </div>
+    </div>
+</div>
+
+<div class="col-md-4">
+    <p>Якщо ви бажаєте змінити інформацію про себе, чи змінити свої відповідді, ви можете пройти це опитування знову, та вся інформація буде оновлена</p>
+</div>

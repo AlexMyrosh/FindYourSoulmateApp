@@ -1,4 +1,7 @@
-﻿namespace BLL.Models
+﻿using BLL.Enums;
+using DAL.Enums;
+
+namespace BLL.Models
 {
     public class UserModel
     {
@@ -9,6 +12,18 @@
         public string TelegramUsername { get; set; }
 
         public string Email { get; set; }
+
+        public int? UniversityYear { get; set; }
+
+        public GenderModel? Gender { get; set; }
+
+        public LookingForGenderModel? LookingForGender { get; set; }
+
+        public RelationTypeModel? LookingForRelationType { get; set; }
+
+        public UniversityFacultyModel? UniversityFaculty { get; set; }
+
+        public string? City { get; set; }
 
         public bool IsDeleted { get; set; }
 

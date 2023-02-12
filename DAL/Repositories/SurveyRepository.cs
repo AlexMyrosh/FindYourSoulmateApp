@@ -26,7 +26,11 @@ namespace DAL.Repositories
 
         public async Task DeleteTemporarilyAsync(Guid id)
         {
-            (await _sqlContext.Surveys.FindAsync(id)).IsDeleted = true;
+            var entity = await _sqlContext.Surveys.FindAsync(id);
+            if (entity != null)
+            {
+                entity.IsDeleted = true;
+            }
         }
 
         public async Task<List<Survey>> GetAllAsync(bool includeDeleted = false)

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using DAL.Enums;
 
 namespace DAL.Models
 {
@@ -8,13 +9,25 @@ namespace DAL.Models
         public Guid Id { get; set; }
 
         [MaxLength(50)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [MaxLength(50)]
-        public string TelegramUsername { get; set; }
+        public string? TelegramUsername { get; set; }
 
         [EmailAddress]
-        public string Email { get; set;}
+        public string? Email { get; set;}
+
+        public int? UniversityYear { get; set; }
+
+        public Gender? Gender { get; set; }
+
+        public LookingForGender? LookingForGender { get; set; }
+
+        public RelationType? LookingForRelationType { get; set; }
+
+        public UniversityFaculty? UniversityFaculty { get; set; }
+
+        public string? City { get; set; }
 
         public bool IsDeleted { get; set; }
 

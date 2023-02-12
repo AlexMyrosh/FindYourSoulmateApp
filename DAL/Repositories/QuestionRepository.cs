@@ -26,7 +26,11 @@ namespace DAL.Repositories
 
         public async Task DeleteTemporarilyAsync(Guid id)
         {
-            (await _sqlContext.Questions.FindAsync(id)).IsDeleted = true;
+            var entity = await _sqlContext.Questions.FindAsync(id);
+            if (entity != null)
+            {
+                entity.IsDeleted = true;
+            }
         }
 
         public async Task<List<Question>> GetAllAsync(bool includeDeleted = false)
@@ -50,7 +54,7 @@ namespace DAL.Repositories
         public async Task<Question> GetByIdAsync(Guid id)
         {
             return await _sqlContext.Questions
-                .Where(entity => entity.Id== id)
+                .Where(entity => entity.Id == id)
                 .FirstOrDefaultAsync();
         }
 

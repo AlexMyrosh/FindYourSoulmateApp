@@ -174,7 +174,7 @@ namespace PL.Controllers
                 await _userService.UpdateAnswers(currentUserModel);
             }
 
-            return View();
+            return View(viewModel);
         }
 
         private Guid GetUserId()

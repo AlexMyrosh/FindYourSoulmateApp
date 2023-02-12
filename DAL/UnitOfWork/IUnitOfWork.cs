@@ -10,6 +10,8 @@ namespace DAL.UnitOfWork
 
         public IUserRepository UserRepository { get; }
 
+        public IUserAnswerRepository UserAnswerRepository { get; }
+
         public void ClearTracking();
 
         public Task SaveChangesAsync();

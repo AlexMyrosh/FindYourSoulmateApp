@@ -133,8 +133,22 @@ namespace BLL.Services
                 entityAnswer.UserId = entity.Id;
                 entityAnswer.Question = null;
             }
-            _unitOfWork.UserRepository.UpdateAnswers(entity.Answers);
+            _unitOfWork.UserAnswerRepository.UpdateAnswers(entity.Answers);
             await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<UserModel> GetByEmailAsync(string email)
+        {
+            var entity = await _unitOfWork.UserRepository.GetByEmailAsync(email);
+            var model = _mapper.Map<UserModel>(entity);
+            return model;
+        }
+
+        public async Task<UserModel> GetBySocialMediaUsernameAsync(string socialMediaUsername)
+        {
+            var entity = await _unitOfWork.UserRepository.GetBySocialMediaUsernameAsync(socialMediaUsername);
+            var model = _mapper.Map<UserModel>(entity);
+            return model;
         }
     }
 }

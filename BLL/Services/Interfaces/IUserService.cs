@@ -1,4 +1,5 @@
 ﻿using BLL.Models;
+using DAL.Models;
 
 namespace BLL.Services.Interfaces
 {
@@ -25,5 +26,9 @@ namespace BLL.Services.Interfaces
         public Task<List<UserModel>> GetAllWithDetailsAsync(bool includeDeleted = false);
 
         public Task<UserModel> GetOrCreateUserByIdAsync(Guid id);
+
+        public Task<UserModel> GetByEmailAsync(string email);
+
+        public Task<UserModel> GetBySocialMediaUsernameAsync(string socialMediaUsername);
     }
 }

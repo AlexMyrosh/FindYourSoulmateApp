@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<PL.ViewModels.SurveyViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Головна";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h3>Список доступних опитувань для проходження:</h3>
 
 @*<p>
     @Html.ActionLink("Create New", "Create")
@@ -20,7 +20,7 @@
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Questions)
+                @Html.DisplayNameFor(model => model.StopDateTime)
             </th>
             <th></th>
         </tr>
@@ -35,16 +35,13 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                    @foreach (var question in item.Questions)
-                {
-                        <p>@question.Body</p>
-                }
+                @Html.DisplayFor(modelItem => item.StopDateTime)
             </td>
             <td>
                     @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |*@
-                    @Html.ActionLink("Пройти", "Edit", "User", new { surveyId = item.Id })
+                    @Html.ActionLink("Перейти", "Edit", "User", new { surveyId = item.Id })
                     @*@Html.ActionLink("Process", "SurveyProcess", new { id = item.Id })*@
             </td>
         </tr>

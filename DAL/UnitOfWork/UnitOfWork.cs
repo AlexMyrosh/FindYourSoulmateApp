@@ -10,6 +10,7 @@ namespace DAL.UnitOfWork
         private IQuestionRepository _questionRepository;
         private ISurveyRepository _surveyRepository;
         private IUserRepository _userRepository;
+        private IUserAnswerRepository _userAnswerRepository;
 
         public UnitOfWork(MssqlContext sqlContext)
         {
@@ -40,6 +41,15 @@ namespace DAL.UnitOfWork
             {
                 _userRepository ??= new UserRepository(_sqlContext);
                 return _userRepository;
+            }
+        }
+
+        public IUserAnswerRepository UserAnswerRepository
+        {
+            get
+            {
+                _userAnswerRepository ??= new UserAnswerRepository(_sqlContext);
+                return _userAnswerRepository;
             }
         }
 

@@ -23,12 +23,31 @@ namespace PL.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
             currentUser.LastSurveyPass = surveyId;
+            currentUser.UniversityYear = 1;
             return View(currentUser);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(UserViewModel viewModel)
         {
+            ModelState.Clear();
+            var userByEmail = await _userService.GetByEmailAsync(viewModel.Email);
+            var userBySocialMediaUsername = await _userService.GetBySocialMediaUsernameAsync(viewModel.TelegramUsername);
+            if (userByEmail != null && userByEmail.Id != viewModel.Id)
+            {
+                ModelState.AddModelError(nameof(viewModel.Email), "Людина з такою поштою вже проходила тестування. Будь ласка зайдіть з того самого пристрою як і раніше");
+            }
+
+            if (userBySocialMediaUsername != null && userBySocialMediaUsername.Id != viewModel.Id)
+            {
+                ModelState.AddModelError(nameof(viewModel.TelegramUsername), "Людина з таким username вже проходила тестування. Будь ласка зайдіть з того самого пристрою як і раніше");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
             var userModel = _mapper.Map<UserModel>(viewModel);
             await _userService.UpdateAsync(userModel);
             return RedirectToAction("PassSurvey", "Survey", new {id = viewModel.LastSurveyPass });

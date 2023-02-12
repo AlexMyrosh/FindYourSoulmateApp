@@ -31,7 +31,11 @@ namespace DAL.Repositories
 
         public async Task DeleteTemporarilyAsync(Guid id)
         {
-            (await _sqlContext.Users.FindAsync(id)).IsDeleted = true;
+            var entity = await _sqlContext.Users.FindAsync(id);
+            if (entity != null)
+            {
+                entity.IsDeleted = true;
+            }
         }
 
         public async Task<List<User>> GetAllAsync(bool includeDeleted = false)
@@ -50,6 +54,11 @@ namespace DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await _sqlContext.Users.Where(entity => entity.Email == email).FirstOrDefaultAsync();
+        }
+
         public async Task<User> GetByIdAsync(Guid id)
         {
             return await _sqlContext.Users
@@ -66,14 +75,14 @@ namespace DAL.Repositories
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<User> GetBySocialMediaUsernameAsync(string socialMediaUsername)
+        {
+            return await _sqlContext.Users.Where(entity => entity.TelegramUsername == socialMediaUsername).FirstOrDefaultAsync();
+        }
+
         public void Update(User entity)
         {
             _sqlContext.Users.Update(entity);
-        }
-
-        public void UpdateAnswers(IEnumerable<UserAnswer> answers)
-        {
-            _sqlContext.UserAnswers.UpdateRange(answers);
         }
     }
 }
