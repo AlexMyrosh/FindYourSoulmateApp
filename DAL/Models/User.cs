@@ -1,36 +1,41 @@
-﻿using System.ComponentModel.DataAnnotations;
-using DAL.Enums;
+﻿using DAL.Enums;
 
 namespace DAL.Models
 {
     public class User
     {
-        [Key]
         public Guid Id { get; set; }
 
-        [MaxLength(50)]
-        public string? Name { get; set; }
+        public string Email { get; set; }
 
-        [MaxLength(50)]
-        public string? TelegramUsername { get; set; }
+        public string Password { get; set; }
 
-        [EmailAddress]
-        public string? Email { get; set;}
+        public string FirstName { get; set; }
 
-        public int? UniversityYear { get; set; }
+        public string LastName { get; set; }
 
-        public Gender? Gender { get; set; }
+        public int Age { get; set; }
 
-        public LookingForGender? LookingForGender { get; set; }
+        public string Username { get; set; }
 
-        public RelationType? LookingForRelationType { get; set; }
+        public string? PhoneNumber { get; set; }
 
-        public UniversityFaculty? UniversityFaculty { get; set; }
+        public DateTime BirthDate { get; set; }
 
-        public string? City { get; set; }
+        public Gender Gender { get; set; }
+
+        public string? Bio { get; set; }
+
+        public Interest[]? Interests { get; set; }
+
+        public LookingForGender LookingForGender { get; set; }
+
+        public RelationType RelationType { get; set; }
+
+        public DateTime RegistrationDate { get; set; }
+
+        public DateTime LastLogin { get; set; }
 
         public bool IsDeleted { get; set; }
-
-        public IEnumerable<UserAnswer> Answers { get; set; }
     }
 }

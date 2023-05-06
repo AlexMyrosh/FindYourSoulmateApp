@@ -4,13 +4,7 @@ namespace DAL.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        public IQuestionRepository QuestionRepository { get; }
-
-        public ISurveyRepository SurveyRepository { get; }
-
         public IUserRepository UserRepository { get; }
-
-        public IUserAnswerRepository UserAnswerRepository { get; }
 
         public void ClearTracking();
 

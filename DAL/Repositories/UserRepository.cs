@@ -14,28 +14,30 @@ namespace DAL.Repositories
             _sqlContext = sqlContext;
         }
 
-        public async Task AddAnswersAsync(IEnumerable<UserAnswer> answers)
-        {
-            await _sqlContext.UserAnswers.AddRangeAsync(answers);
-        }
-
         public async Task<User> AddAsync(User entity)
         {
             return (await _sqlContext.Users.AddAsync(entity)).Entity;
         }
 
-        public void DeletePermanently(User entity)
+        public void Update(User entity)
         {
-            _sqlContext.Users.Remove(entity);
+            _sqlContext.Users.Update(entity);
         }
 
-        public async Task DeleteTemporarilyAsync(Guid id)
+        public User DeletePermanently(User entity)
+        {
+            return _sqlContext.Users.Remove(entity).Entity;
+        }
+
+        public async Task<User?> DeleteTemporarilyAsync(Guid id)
         {
             var entity = await _sqlContext.Users.FindAsync(id);
             if (entity != null)
             {
                 entity.IsDeleted = true;
             }
+
+            return entity;
         }
 
         public async Task<List<User>> GetAllAsync(bool includeDeleted = false)
@@ -45,44 +47,24 @@ namespace DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<User>> GetAllWithDetailsAsync(bool includeDeleted = false)
+        public async Task<User?> GetByIdAsync(Guid id)
         {
-            return await _sqlContext.Users
-                .Include(entity => entity.Answers)
-                .ThenInclude(answer => answer.Question)
-                .Where(entity => entity.IsDeleted == false || entity.IsDeleted == includeDeleted)
-                .ToListAsync();
+            return await _sqlContext.Users.FindAsync(id);
         }
 
-        public async Task<User> GetByEmailAsync(string email)
+        public async Task<User?> GetByEmailAsync(string email)
         {
             return await _sqlContext.Users.Where(entity => entity.Email == email).FirstOrDefaultAsync();
         }
 
-        public async Task<User> GetByIdAsync(Guid id)
+        public async Task<User?> GetByUsernameAsync(string username)
         {
-            return await _sqlContext.Users
-                .Where(entity => entity.Id == id)
-                .FirstOrDefaultAsync();
+            return await _sqlContext.Users.Where(entity => entity.Username == username).FirstOrDefaultAsync();
         }
 
-        public async Task<User> GetByIdWithDetailsAsync(Guid id)
+        public async Task<User?> GetByPhoneNumberAsync(string phoneNumber)
         {
-            return await _sqlContext.Users
-                .Include(entity => entity.Answers)
-                .ThenInclude(answer => answer.Question)
-                .Where(entity => entity.Id == id)
-                .FirstOrDefaultAsync();
-        }
-
-        public async Task<User> GetBySocialMediaUsernameAsync(string socialMediaUsername)
-        {
-            return await _sqlContext.Users.Where(entity => entity.TelegramUsername == socialMediaUsername).FirstOrDefaultAsync();
-        }
-
-        public void Update(User entity)
-        {
-            _sqlContext.Users.Update(entity);
+            return await _sqlContext.Users.Where(entity => entity.PhoneNumber == phoneNumber).FirstOrDefaultAsync();
         }
     }
 }
