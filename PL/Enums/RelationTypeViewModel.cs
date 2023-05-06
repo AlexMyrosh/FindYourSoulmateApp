@@ -1,13 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace PL.Enums;
+﻿namespace PL.Enums;
 
 public enum RelationTypeViewModel
 {
-    [Display(Name = "Друзів")]
     Friendship,
-    [Display(Name = "Можливо кохання:)")]
     Relationship,
-    [Display(Name = "Ще не визначився (-лась)")]
-    Unknown
+    Family,
+    Colleague,
+    Acquaintance,
+    Mentor,
+    Mentee,
+    BusinessPartner,
+    Roommate,
+    Classmate,
+    Neighbor,
+    Teammate,
+    ClubMember,
+    PenPal,
+    OnlineFriend,
+    Other
 }

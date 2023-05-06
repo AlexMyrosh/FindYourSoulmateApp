@@ -2,7 +2,9 @@
 using BLL.Enums;
 using BLL.Models;
 using DAL.Enums;
+using DAL.Models;
 using PL.Enums;
+using PL.Models;
 using PL.ViewModels;
 
 namespace PL.AutoMapper
@@ -11,15 +13,12 @@ namespace PL.AutoMapper
     {
         public ModelsToViewModelsAutoMapper()
         {
-            CreateMap<QuestionViewModel, QuestionModel>().ReverseMap();
-            CreateMap<AnswerOptionViewModel, AnswerOptionModel>().ReverseMap();
-            CreateMap<SurveyViewModel, SurveyModel>().ReverseMap();
             CreateMap<UserViewModel, UserModel>().ReverseMap();
-            CreateMap<UserAnswerViewModel, UserAnswerModel>().ReverseMap();
-            CreateMap<LookingForGenderViewModel, LookingForGenderModel>().ReverseMap();
+
             CreateMap<GenderViewModel, GenderModel>().ReverseMap();
+            CreateMap<InterestViewModel, InterestModel>().ReverseMap();
+            CreateMap<LookingForGenderViewModel, LookingForGenderModel>().ReverseMap();
             CreateMap<RelationTypeViewModel, RelationTypeModel>().ReverseMap();
-            CreateMap<UniversityFacultyViewModel, UniversityFacultyModel>().ReverseMap();
         }
     }
 }

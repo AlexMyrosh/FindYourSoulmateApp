@@ -26,7 +26,7 @@ namespace BLL.Models
 
         public string? Bio { get; set; }
 
-        public InterestModel[]? Interests { get; set; }
+        public List<InterestModel> Interests { get; set; }
 
         public LookingForGenderModel LookingForGender { get; set; }
 

@@ -26,7 +26,7 @@ namespace DAL.Models
 
         public string? Bio { get; set; }
 
-        public Interest[]? Interests { get; set; }
+        public List<Interest> Interests { get; set; }
 
         public LookingForGender LookingForGender { get; set; }
 

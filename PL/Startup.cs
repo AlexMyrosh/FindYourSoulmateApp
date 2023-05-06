@@ -8,8 +8,6 @@ using DAL.Repositories.Interfaces;
 using DAL.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using PL.AutoMapper;
-using PL.MiddleWares;
-using Hangfire;
 
 namespace PL
 {
@@ -34,22 +32,14 @@ namespace PL
                 mc.AddProfile(new ModelsToViewModelsAutoMapper());
             }).CreateMapper());
 
-            services.AddScoped<IQuestionService, QuestionService>();
-            services.AddScoped<ISurveyService, SurveyService>();
+            // Services:
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IEmailService, EmailService>();
 
-            services.AddScoped<IQuestionRepository, QuestionRepository>();
-            services.AddScoped<ISurveyRepository, SurveyRepository>();
+            // Repositories:
             services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<MssqlContext, MssqlContext>();
-
-            services.AddTransient<UserIdCookiesMiddleware>();
-
-            services.AddHangfire(x => x.UseSqlServerStorage(sqlConnectionString));
-            services.AddHangfireServer();
 
             services.AddMvc();
             services.AddControllersWithViews();
@@ -63,8 +53,6 @@ namespace PL
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMiddleware<UserIdCookiesMiddleware>();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -74,7 +62,7 @@ namespace PL
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", "{controller=User}/{action=Edit}/{surveyId=5012A854-5977-44FD-B915-C31DFF642242}");
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
             });
         }
     }
