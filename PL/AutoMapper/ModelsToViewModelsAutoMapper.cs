@@ -14,9 +14,9 @@ namespace PL.AutoMapper
         public ModelsToViewModelsAutoMapper()
         {
             CreateMap<UserViewModel, UserModel>().ReverseMap();
+            CreateMap<InterestViewModel, InterestModel>().ReverseMap();
 
             CreateMap<GenderViewModel, GenderModel>().ReverseMap();
-            CreateMap<InterestViewModel, InterestModel>().ReverseMap();
             CreateMap<LookingForGenderViewModel, LookingForGenderModel>().ReverseMap();
             CreateMap<RelationTypeViewModel, RelationTypeModel>().ReverseMap();
         }

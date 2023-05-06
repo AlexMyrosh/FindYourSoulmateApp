@@ -14,22 +14,22 @@ namespace DAL.Repositories.Interfaces
 
         public Task<List<User>> GetAllAsync(bool includeDeleted = false);
 
-        //public Task<List<User>> GetAllWithDetailsAsync(bool includeDeleted = false);
+        public Task<List<User>> GetAllWithDetailsAsync(bool includeDeleted = false);
 
         public Task<User?> GetByIdAsync(Guid id);
 
-        //public Task<User> GetByIdWithDetailsAsync(Guid id);
+        public Task<User?> GetByIdWithDetailsAsync(Guid id);
         
         public Task<User?> GetByEmailAsync(string email);
 
-        //public Task<User> GetByEmailWithDetailsAsync(string email);
+        public Task<User?> GetByEmailWithDetailsAsync(string email);
 
         public Task<User?> GetByUsernameAsync(string username);
 
-        //public Task<User> GetByUsernameWithDetailsAsync(string username);
+        public Task<User?> GetByUsernameWithDetailsAsync(string username);
 
         public Task<User?> GetByPhoneNumberAsync(string phoneNumber);
 
-        //public Task<User> GetByPhoneNumberWithDetailsAsync(string phoneNumber);
+        public Task<User?> GetByPhoneNumberWithDetailsAsync(string phoneNumber);
     }
 }

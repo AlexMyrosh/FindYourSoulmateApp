@@ -14,22 +14,22 @@ namespace BLL.Services.Interfaces
 
         public Task<List<UserModel>> GetAllAsync(bool includeDeleted = false);
 
-        //public Task<List<UserModel>> GetAllWithDetailsAsync(bool includeDeleted = false);
+        public Task<List<UserModel>> GetAllWithDetailsAsync(bool includeDeleted = false);
 
         public Task<UserModel?> GetByIdAsync(Guid id);
 
-        //public Task<UserModel> GetByIdWithDetailsAsync(Guid id);
+        public Task<UserModel?> GetByIdWithDetailsAsync(Guid id);
 
         public Task<UserModel?> GetByEmailAsync(string email);
 
-        //public Task<UserModel> GetByEmailWithDetailsAsync(string email);
+        public Task<UserModel?> GetByEmailWithDetailsAsync(string email);
 
         public Task<UserModel?> GetByUsernameAsync(string username);
 
-        //public Task<UserModel> GetByUsernameWithDetailsAsync(string username);
+        public Task<UserModel?> GetByUsernameWithDetailsAsync(string username);
 
         public Task<UserModel?> GetByPhoneNumberAsync(string phoneNumber);
 
-        //public Task<UserModel> GetByPhoneNumberWithDetailsAsync(string phoneNumber);
+        public Task<UserModel?> GetByPhoneNumberWithDetailsAsync(string phoneNumber);
     }
 }

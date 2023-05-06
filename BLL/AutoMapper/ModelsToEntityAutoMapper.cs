@@ -11,9 +11,9 @@ namespace BLL.AutoMapper
         public ModelsToEntityAutoMapper()
         {
             CreateMap<UserModel, User>().ReverseMap();
-            
-            CreateMap<GenderModel, Gender>().ReverseMap();
             CreateMap<InterestModel, Interest>().ReverseMap();
+
+            CreateMap<GenderModel, Gender>().ReverseMap();
             CreateMap<LookingForGenderModel, LookingForGender>().ReverseMap();
             CreateMap<RelationTypeModel, RelationType>().ReverseMap();
         }

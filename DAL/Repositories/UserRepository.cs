@@ -47,24 +47,70 @@ namespace DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<User>> GetAllWithDetailsAsync(bool includeDeleted = false)
+        {
+            return await _sqlContext.Users
+                .Include(entity=> entity.Interests)
+                .Where(entity => entity.IsDeleted == false || entity.IsDeleted == includeDeleted)
+                .ToListAsync();
+        }
+
         public async Task<User?> GetByIdAsync(Guid id)
         {
             return await _sqlContext.Users.FindAsync(id);
         }
 
+        public async Task<User?> GetByIdWithDetailsAsync(Guid id)
+        {
+            return await _sqlContext.Users
+                .Include(entity => entity.Interests)
+                .Where(entity => entity.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _sqlContext.Users.Where(entity => entity.Email == email).FirstOrDefaultAsync();
+            return await _sqlContext.Users
+                .Where(entity => entity.Email == email)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<User?> GetByEmailWithDetailsAsync(string email)
+        {
+            return await _sqlContext.Users
+                .Include(entity => entity.Interests)
+                .Where(entity => entity.Email == email)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<User?> GetByUsernameAsync(string username)
         {
-            return await _sqlContext.Users.Where(entity => entity.Username == username).FirstOrDefaultAsync();
+            return await _sqlContext.Users
+                .Where(entity => entity.Username == username)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<User?> GetByUsernameWithDetailsAsync(string username)
+        {
+            return await _sqlContext.Users
+                .Include(entity => entity.Interests)
+                .Where(entity => entity.Username == username)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<User?> GetByPhoneNumberAsync(string phoneNumber)
         {
-            return await _sqlContext.Users.Where(entity => entity.PhoneNumber == phoneNumber).FirstOrDefaultAsync();
+            return await _sqlContext.Users
+                .Where(entity => entity.PhoneNumber == phoneNumber)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<User?> GetByPhoneNumberWithDetailsAsync(string phoneNumber)
+        {
+            return await _sqlContext.Users
+                .Include(entity => entity.Interests)
+                .Where(entity => entity.PhoneNumber == phoneNumber)
+                .FirstOrDefaultAsync();
         }
     }
 }
