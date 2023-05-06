@@ -6,8 +6,10 @@ using DAL.Context;
 using DAL.Repositories;
 using DAL.Repositories.Interfaces;
 using DAL.UnitOfWork;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PL.AutoMapper;
+using PL.ViewModels;
 
 namespace PL
 {
@@ -26,6 +28,9 @@ namespace PL
             var sqlConnectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<MssqlContext>(options => options.UseSqlServer(sqlConnectionString));
 
+            services.AddDefaultIdentity<UserViewModel>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<MssqlContext>();
+
             services.AddSingleton(new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new ModelsToEntityAutoMapper());
@@ -42,7 +47,11 @@ namespace PL
             services.AddScoped<MssqlContext, MssqlContext>();
 
             services.AddMvc();
-            services.AddControllersWithViews();
+            services.AddRazorPages();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +67,7 @@ namespace PL
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
