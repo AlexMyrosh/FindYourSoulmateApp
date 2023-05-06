@@ -1,5 +1,4 @@
 ﻿using BLL.Enums;
-using DAL.Enums;
 
 namespace BLL.Models
 {
@@ -7,26 +6,36 @@ namespace BLL.Models
     {
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
-
-        public string TelegramUsername { get; set; }
-
         public string Email { get; set; }
 
-        public int? UniversityYear { get; set; }
+        public string Password { get; set; }
 
-        public GenderModel? Gender { get; set; }
+        public string FirstName { get; set; }
 
-        public LookingForGenderModel? LookingForGender { get; set; }
+        public string LastName { get; set; }
 
-        public RelationTypeModel? LookingForRelationType { get; set; }
+        public int Age { get; set; }
 
-        public UniversityFacultyModel? UniversityFaculty { get; set; }
+        public string Username { get; set; }
 
-        public string? City { get; set; }
+        public string? PhoneNumber { get; set; }
+
+        public DateTime BirthDate { get; set; }
+
+        public GenderModel Gender { get; set; }
+
+        public string? Bio { get; set; }
+
+        public InterestModel[]? Interests { get; set; }
+
+        public LookingForGenderModel LookingForGender { get; set; }
+
+        public RelationTypeModel RelationType { get; set; }
+
+        public DateTime RegistrationDate { get; set; }
+
+        public DateTime LastLogin { get; set; }
 
         public bool IsDeleted { get; set; }
-
-        public List<UserAnswerModel> Answers { get; set; }
     }
 }

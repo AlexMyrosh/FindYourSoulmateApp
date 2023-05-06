@@ -17,30 +17,47 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(UserModel model)
+        public async Task<UserModel> AddAsync(UserModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
             var entity = _mapper.Map<User>(model);
-            await _unitOfWork.UserRepository.AddAsync(entity);
+            var addedEntity = await _unitOfWork.UserRepository.AddAsync(entity);
             await _unitOfWork.SaveChangesAsync();
+            var addedModel = _mapper.Map<UserModel>(addedEntity);
+            return addedModel;
         }
 
-        public async Task DeletePermanentlyAsync(UserModel model)
+        public async Task<UserModel?> UpdateAsync(UserModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
             var entity = _mapper.Map<User>(model);
-            _unitOfWork.UserRepository.DeletePermanently(entity);
+            var updatedEntity = _unitOfWork.UserRepository.Update(entity);
             await _unitOfWork.SaveChangesAsync();
+            var updatedModel = _mapper.Map<UserModel>(updatedEntity);
+            return updatedModel;
         }
 
-        public async Task DeleteTemporarilyAsync(Guid id)
+        public async Task<UserModel?> DeletePermanentlyAsync(UserModel model)
+        {
+            if (model == null) throw new ArgumentNullException(nameof(model));
+
+            var entity = _mapper.Map<User>(model);
+            var deletedEntity = _unitOfWork.UserRepository.DeletePermanently(entity);
+            await _unitOfWork.SaveChangesAsync();
+            var deletedModel = _mapper.Map<UserModel>(deletedEntity);
+            return deletedModel;
+        }
+
+        public async Task<UserModel?> DeleteTemporarilyAsync(Guid id)
         {
             if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
 
-            await _unitOfWork.UserRepository.DeleteTemporarilyAsync(id);
+            var deletedEntity = await _unitOfWork.UserRepository.DeleteTemporarilyAsync(id);
             await _unitOfWork.SaveChangesAsync();
+            var deletedModel = _mapper.Map<UserModel>(deletedEntity);
+            return deletedModel;
         }
 
         public async Task<List<UserModel>> GetAllAsync(bool includeDeleted = false)
@@ -50,14 +67,7 @@ namespace BLL.Services
             return models;
         }
 
-        public async Task<List<UserModel>> GetAllWithDetailsAsync(bool includeDeleted = false)
-        {
-            var entities = await _unitOfWork.UserRepository.GetAllWithDetailsAsync(includeDeleted);
-            var models = _mapper.Map<List<UserModel>>(entities);
-            return models;
-        }
-
-        public async Task<UserModel> GetByIdAsync(Guid id)
+        public async Task<UserModel?> GetByIdAsync(Guid id)
         {
             if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
 
@@ -66,87 +76,23 @@ namespace BLL.Services
             return model;
         }
 
-        public async Task<UserModel> GetByIdWithDetailsAsync(Guid id)
-        {
-            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
-
-            var entity = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(id);
-            var model = _mapper.Map<UserModel>(entity);
-            return model;
-        }
-
-        public async Task<UserModel> GetOrCreateUserByIdAsync(Guid id)
-        {
-            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
-
-            var entity = await _unitOfWork.UserRepository.GetByIdAsync(id);
-            if (entity == null)
-            {
-                entity = await _unitOfWork.UserRepository.AddAsync(new User
-                {
-                    Id = id
-                });
-                await _unitOfWork.SaveChangesAsync();
-            }
-
-            var model = _mapper.Map<UserModel>(entity);
-            return model;
-        }
-
-        public async Task UpdateAsync(UserModel model)
-        {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            var entity = _mapper.Map<User>(model);
-            foreach (var entityAnswer in entity.Answers)
-            {
-                entityAnswer.Question = await _unitOfWork.QuestionRepository.GetByIdAsync(entityAnswer.Question.Id);
-            }
-            _unitOfWork.ClearTracking();
-            _unitOfWork.UserRepository.Update(entity);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task AddAnswers(UserModel model)
-        {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            var entity = _mapper.Map<User>(model);
-            _unitOfWork.ClearTracking();
-            foreach (var entityAnswer in entity.Answers)
-            {
-                entityAnswer.UserId = entity.Id;
-                entityAnswer.Question = null;
-            }
-            await _unitOfWork.UserRepository.AddAnswersAsync(entity.Answers);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task UpdateAnswers(UserModel model)
-        {
-            if (model == null) throw new ArgumentNullException(nameof(model));
-
-            var entity = _mapper.Map<User>(model);
-            _unitOfWork.ClearTracking();
-            foreach (var entityAnswer in entity.Answers)
-            {
-                entityAnswer.UserId = entity.Id;
-                entityAnswer.Question = null;
-            }
-            _unitOfWork.UserAnswerRepository.UpdateAnswers(entity.Answers);
-            await _unitOfWork.SaveChangesAsync();
-        }
-
-        public async Task<UserModel> GetByEmailAsync(string email)
+        public async Task<UserModel?> GetByEmailAsync(string email)
         {
             var entity = await _unitOfWork.UserRepository.GetByEmailAsync(email);
             var model = _mapper.Map<UserModel>(entity);
             return model;
         }
 
-        public async Task<UserModel> GetBySocialMediaUsernameAsync(string socialMediaUsername)
+        public async Task<UserModel?> GetByUsernameAsync(string username)
         {
-            var entity = await _unitOfWork.UserRepository.GetBySocialMediaUsernameAsync(socialMediaUsername);
+            var entity = await _unitOfWork.UserRepository.GetByUsernameAsync(username);
+            var model = _mapper.Map<UserModel>(entity);
+            return model;
+        }
+
+        public async Task<UserModel?> GetByPhoneNumberAsync(string phoneNumber)
+        {
+            var entity = await _unitOfWork.UserRepository.GetByPhoneNumberAsync(phoneNumber);
             var model = _mapper.Map<UserModel>(entity);
             return model;
         }

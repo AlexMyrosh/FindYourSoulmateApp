@@ -6,7 +6,7 @@ namespace DAL.Repositories.Interfaces
     {
         public Task<User> AddAsync(User entity);
 
-        public void Update(User entity);
+        public User Update(User entity);
 
         public User DeletePermanently(User entity);
 

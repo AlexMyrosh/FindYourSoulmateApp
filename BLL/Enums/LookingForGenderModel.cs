@@ -4,5 +4,5 @@ public enum LookingForGenderModel
 {
     Male,
     Female,
-    Unknown
+    Both
 }

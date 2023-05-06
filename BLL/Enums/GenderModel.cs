@@ -3,5 +3,6 @@
 public enum GenderModel
 {
     Male,
-    Female
+    Female,
+    PreferNotToSay
 }

@@ -4,5 +4,18 @@ public enum RelationTypeModel
 {
     Friendship,
     Relationship,
-    Unknown
+    Family,
+    Colleague,
+    Acquaintance,
+    Mentor,
+    Mentee,
+    BusinessPartner,
+    Roommate,
+    Classmate,
+    Neighbor,
+    Teammate,
+    ClubMember,
+    PenPal,
+    OnlineFriend,
+    Other
 }

@@ -10,15 +10,12 @@ namespace BLL.AutoMapper
     {
         public ModelsToEntityAutoMapper()
         {
-            CreateMap<QuestionModel, Question>().ReverseMap();
-            CreateMap<AnswerOptionModel, AnswerOption>().ReverseMap();
-            CreateMap<SurveyModel, Survey>().ReverseMap();
             CreateMap<UserModel, User>().ReverseMap();
-            CreateMap<UserAnswerModel, UserAnswer>().ReverseMap();
-            CreateMap<LookingForGenderModel, LookingForGender>().ReverseMap();
+            
             CreateMap<GenderModel, Gender>().ReverseMap();
+            CreateMap<InterestModel, Interest>().ReverseMap();
+            CreateMap<LookingForGenderModel, LookingForGender>().ReverseMap();
             CreateMap<RelationTypeModel, RelationType>().ReverseMap();
-            CreateMap<UniversityFacultyModel, UniversityFaculty>().ReverseMap();
         }
     }
 }

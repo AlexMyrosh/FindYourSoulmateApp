@@ -19,9 +19,9 @@ namespace DAL.Repositories
             return (await _sqlContext.Users.AddAsync(entity)).Entity;
         }
 
-        public void Update(User entity)
+        public User Update(User entity)
         {
-            _sqlContext.Users.Update(entity);
+            return _sqlContext.Users.Update(entity).Entity;
         }
 
         public User DeletePermanently(User entity)
