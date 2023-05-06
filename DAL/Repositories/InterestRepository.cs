@@ -50,7 +50,7 @@ namespace DAL.Repositories
         public async Task<List<Interest>> GetAllWithDetailsAsync(bool includeDeleted = false)
         {
             return await _sqlContext.Interests
-                .Include(entity=> entity.Users)
+                .Include(entity => entity.Users)
                 .Where(entity => entity.IsDeleted == false || entity.IsDeleted == includeDeleted)
                 .ToListAsync();
         }

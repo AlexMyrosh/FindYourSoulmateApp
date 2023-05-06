@@ -1,16 +1,16 @@
 ﻿using DAL.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Context
 {
-    public class MssqlContext : DbContext
+    public class MssqlContext : IdentityDbContext<User>
     {
         public MssqlContext(DbContextOptions<MssqlContext> options) : base(options)
         {
-
+            
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Interest> Interests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -18,12 +18,7 @@ namespace DAL.Context
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Interests)
                 .WithMany(i => i.Users)
-                .UsingEntity(j => j.ToTable("UserInterests"));
-
-            modelBuilder.Entity<User>()
-                .Property(u => u.Id)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("NEWID()");
+                .UsingEntity(j => j.ToTable("InterestsUsers"));
 
             modelBuilder.Entity<Interest>()
                 .Property(u => u.Id)
@@ -83,6 +78,8 @@ namespace DAL.Context
                 new Interest { Id = new Guid("77083050-3e8c-4e5e-80e7-4e486b552328"), Name = "BoardGames" },
                 new Interest { Id = new Guid("a5c420ba-e666-4bfc-9a6a-d44b605a403e"), Name = "Volunteer" }
             });
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

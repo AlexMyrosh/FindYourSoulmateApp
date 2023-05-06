@@ -64,7 +64,7 @@ namespace DAL.Repositories
         {
             return await _sqlContext.Users
                 .Include(entity => entity.Interests)
-                .Where(entity => entity.Id == id)
+                .Where(entity => entity.Id == id.ToString())
                 .FirstOrDefaultAsync();
         }
 
@@ -86,7 +86,7 @@ namespace DAL.Repositories
         public async Task<User?> GetByUsernameAsync(string username)
         {
             return await _sqlContext.Users
-                .Where(entity => entity.Username == username)
+                .Where(entity => entity.UserName == username)
                 .FirstOrDefaultAsync();
         }
 
@@ -94,7 +94,7 @@ namespace DAL.Repositories
         {
             return await _sqlContext.Users
                 .Include(entity => entity.Interests)
-                .Where(entity => entity.Username == username)
+                .Where(entity => entity.UserName == username)
                 .FirstOrDefaultAsync();
         }
 
