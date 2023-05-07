@@ -1,14 +1,12 @@
-﻿using DAL.Context;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace PL.Controllers
 {
     public class HomeController : Controller
     {
-        private MssqlContext _context;
-        public HomeController(MssqlContext context)
+        public HomeController()
         {
-            _context = context;
+            
         }
 
         // GET: HomeController

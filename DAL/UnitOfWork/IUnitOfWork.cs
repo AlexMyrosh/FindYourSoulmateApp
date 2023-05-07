@@ -8,6 +8,8 @@ namespace DAL.UnitOfWork
 
         public IInterestRepository InterestRepository { get; }
 
+        public IAccountRepository AccountRepository { get; }
+
         public void ClearTracking();
 
         public Task SaveChangesAsync();

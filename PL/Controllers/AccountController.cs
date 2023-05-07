@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using BLL.Models;
+using BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using PL.ViewModels;
 
@@ -6,13 +8,15 @@ namespace PL.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<UserViewModel> _userManager;
-        private readonly SignInManager<UserViewModel> _signInManager;
+        private readonly IUserService _userService;
+        private readonly IAccountService _accountService;
+        private readonly IMapper _mapper;
 
-        public AccountController(UserManager<UserViewModel> userManager, SignInManager<UserViewModel> signInManager)
+        public AccountController(IUserService userService, IAccountService accountService, IMapper mapper)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
+            _accountService = accountService;
+            _mapper = mapper;
         }
 
         // GET: /Account/Register
@@ -29,17 +33,11 @@ namespace PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new UserViewModel
-                {
-                    FirstName = model.FirstName,
-                    UserName = model.Username, 
-                    Email = model.Email
-                };
-
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var userModel = _mapper.Map<UserModel>(model);
+                var result = await _userService.AddAsync(userModel, model.Password);
                 if (result.Succeeded)
                 {
-                    await _signInManager.SignInAsync(user, isPersistent: model.StayLoggedIn);
+                    await _accountService.SignInAsync(userModel, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
 
@@ -49,7 +47,36 @@ namespace PL.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        // GET: /Account/Login
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: /Account/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            returnUrl ??= Url.Content("~/");
+
+            var result = await _accountService.SignInAsync(model.UserName, model.Password, model.RememberMe);
+
+            if (result.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View(model);
         }
 
@@ -58,7 +85,7 @@ namespace PL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _accountService.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
     }

@@ -9,7 +9,7 @@ namespace PL.ViewModels
         public string FirstName { get; set; }
 
         [Required]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [EmailAddress]
@@ -23,8 +23,5 @@ namespace PL.ViewModels
         [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
-        [Display(Name = "Stay logged in")]
-        public bool StayLoggedIn { get; set; }
     }
 }

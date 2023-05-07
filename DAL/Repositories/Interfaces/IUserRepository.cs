@@ -1,16 +1,17 @@
 ﻿using DAL.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace DAL.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        public Task<User> AddAsync(User entity);
+        public Task<IdentityResult> AddAsync(User entity, string password);
 
-        public User Update(User entity);
+        public Task<IdentityResult> UpdateAsync(User entity);
 
-        public User DeletePermanently(User entity);
+        public Task<IdentityResult> DeletePermanentlyAsync(User entity);
 
-        public Task<User?> DeleteTemporarilyAsync(Guid id);
+        public Task<IdentityResult> DeleteTemporarilyAsync(User entity);
 
         public Task<List<User>> GetAllAsync(bool includeDeleted = false);
 

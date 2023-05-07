@@ -1,8 +1,9 @@
 ﻿using BLL.Enums;
+using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Models
 {
-    public class UserModel
+    public class UserModel : IdentityUser
     {
         public string? FirstName { get; set; }
 
