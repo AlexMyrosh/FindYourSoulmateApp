@@ -37,7 +37,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Interests");
+                    b.ToTable("Interests", (string)null);
 
                     b.HasData(
                         new

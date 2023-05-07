@@ -1,7 +1,4 @@
-﻿using DAL.Models;
-using System;
-using System.Collections.Generic;
-using BLL.Models;
+﻿using BLL.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Services.Interfaces

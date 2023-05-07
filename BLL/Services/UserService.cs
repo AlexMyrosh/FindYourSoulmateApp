@@ -4,6 +4,7 @@ using BLL.Services.Interfaces;
 using DAL.Models;
 using DAL.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace BLL.Services
 {
@@ -24,18 +25,29 @@ namespace BLL.Services
 
             var entity = _mapper.Map<User>(model);
             var result = await _unitOfWork.UserRepository.AddAsync(entity, password);
-            //await _unitOfWork.SaveChangesAsync();
             return result;
         }
 
-        public async Task<IdentityResult> UpdateAsync(UserModel model)
+        public async Task<UserModel> UpdateAsync(UserModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
-            var entity = _mapper.Map<User>(model);
-            var result = await _unitOfWork.UserRepository.UpdateAsync(entity);
-            //await _unitOfWork.SaveChangesAsync();
-            return result;
+            var entity = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(model.Id);
+            entity = _mapper.Map(model, entity);
+
+            entity.Interests = new List<Interest>();
+            for (int i = 0; i < model.Interests?.Count; i++)
+            {
+                var interest = await _unitOfWork.InterestRepository.GetByIdAsync(model.Interests[i].Id);
+                if (interest != null)
+                {
+                    entity.Interests.Add(interest);
+                }
+            }
+
+            var result = _unitOfWork.UserRepository.UpdateAsync(entity);
+            await _unitOfWork.SaveChangesAsync();
+            return _mapper.Map<UserModel>(result);
         }
 
         public async Task<IdentityResult> DeletePermanentlyAsync(UserModel model)
@@ -44,7 +56,6 @@ namespace BLL.Services
 
             var entity = _mapper.Map<User>(model);
             var result = await _unitOfWork.UserRepository.DeletePermanentlyAsync(entity);
-            //await _unitOfWork.SaveChangesAsync();
             return result;
         }
 
@@ -54,7 +65,6 @@ namespace BLL.Services
 
             var entity = _mapper.Map<User>(model);
             var result = await _unitOfWork.UserRepository.DeleteTemporarilyAsync(entity);
-            //await _unitOfWork.SaveChangesAsync();
             return result;
         }
 
@@ -72,20 +82,20 @@ namespace BLL.Services
             return models;
         }
 
-        public async Task<UserModel?> GetByIdAsync(Guid id)
+        public async Task<UserModel?> GetByIdAsync(string id)
         {
-            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException($"{nameof(id)} is null or empty");
 
             var entity = await _unitOfWork.UserRepository.GetByIdAsync(id);
             var model = _mapper.Map<UserModel>(entity);
             return model;
         }
 
-        public async Task<UserModel?> GetByIdWithDetailsAsync(Guid id)
+        public async Task<UserModel?> GetByIdWithDetailsAsync(string id)
         {
-            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException($"{nameof(id)} is null or empty");
 
-            var entity = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(id);
+            var entity = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(id.ToString());
             var model = _mapper.Map<UserModel>(entity);
             return model;
         }
@@ -140,6 +150,13 @@ namespace BLL.Services
             if (string.IsNullOrEmpty(phoneNumber)) throw new ArgumentNullException(nameof(phoneNumber));
 
             var entity = await _unitOfWork.UserRepository.GetByPhoneNumberWithDetailsAsync(phoneNumber);
+            var model = _mapper.Map<UserModel>(entity);
+            return model;
+        }
+
+        public async Task<UserModel?> GetCurrentUserWithDetailsAsync(ClaimsPrincipal principal)
+        {
+            var entity = await _unitOfWork.UserRepository.GetCurrentUserWithDetailsAsync(principal);
             var model = _mapper.Map<UserModel>(entity);
             return model;
         }
