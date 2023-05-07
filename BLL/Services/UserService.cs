@@ -3,6 +3,7 @@ using BLL.Models;
 using BLL.Services.Interfaces;
 using DAL.Models;
 using DAL.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Services
 {
@@ -17,47 +18,44 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<UserModel> AddAsync(UserModel model)
+        public async Task<IdentityResult> AddAsync(UserModel model, string password)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
             var entity = _mapper.Map<User>(model);
-            var addedEntity = await _unitOfWork.UserRepository.AddAsync(entity);
-            await _unitOfWork.SaveChangesAsync();
-            var addedModel = _mapper.Map<UserModel>(addedEntity);
-            return addedModel;
+            var result = await _unitOfWork.UserRepository.AddAsync(entity, password);
+            //await _unitOfWork.SaveChangesAsync();
+            return result;
         }
 
-        public async Task<UserModel?> UpdateAsync(UserModel model)
+        public async Task<IdentityResult> UpdateAsync(UserModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
             var entity = _mapper.Map<User>(model);
-            var updatedEntity = _unitOfWork.UserRepository.Update(entity);
-            await _unitOfWork.SaveChangesAsync();
-            var updatedModel = _mapper.Map<UserModel>(updatedEntity);
-            return updatedModel;
+            var result = await _unitOfWork.UserRepository.UpdateAsync(entity);
+            //await _unitOfWork.SaveChangesAsync();
+            return result;
         }
 
-        public async Task<UserModel?> DeletePermanentlyAsync(UserModel model)
+        public async Task<IdentityResult> DeletePermanentlyAsync(UserModel model)
         {
             if (model == null) throw new ArgumentNullException(nameof(model));
 
             var entity = _mapper.Map<User>(model);
-            var deletedEntity = _unitOfWork.UserRepository.DeletePermanently(entity);
-            await _unitOfWork.SaveChangesAsync();
-            var deletedModel = _mapper.Map<UserModel>(deletedEntity);
-            return deletedModel;
+            var result = await _unitOfWork.UserRepository.DeletePermanentlyAsync(entity);
+            //await _unitOfWork.SaveChangesAsync();
+            return result;
         }
 
-        public async Task<UserModel?> DeleteTemporarilyAsync(Guid id)
+        public async Task<IdentityResult> DeleteTemporarilyAsync(UserModel model)
         {
-            if (id == Guid.Empty) throw new ArgumentException($"{nameof(id)} is empty");
+            if (model == null) throw new ArgumentNullException($"{nameof(model)}");
 
-            var deletedEntity = await _unitOfWork.UserRepository.DeleteTemporarilyAsync(id);
-            await _unitOfWork.SaveChangesAsync();
-            var deletedModel = _mapper.Map<UserModel>(deletedEntity);
-            return deletedModel;
+            var entity = _mapper.Map<User>(model);
+            var result = await _unitOfWork.UserRepository.DeleteTemporarilyAsync(entity);
+            //await _unitOfWork.SaveChangesAsync();
+            return result;
         }
 
         public async Task<List<UserModel>> GetAllAsync(bool includeDeleted = false)

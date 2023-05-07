@@ -18,9 +18,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="Username" class="form-label"></label>
-                    <input asp-for="Username" class="form-control" />
-                    <span asp-validation-for="Username" class="text-danger"></span>
+                    <label asp-for="UserName" class="form-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
@@ -41,10 +41,6 @@
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
 
-                <div class="mb-3 form-check">
-                    <input asp-for="StayLoggedIn" class="form-check-input" />
-                    <label asp-for="StayLoggedIn" class="form-check-label"></label>
-                </div>
                 <div class="text-danger" asp-validation-summary="All"></div>
                 <button type="submit" class="btn btn-primary">Register</button>
             </form>

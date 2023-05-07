@@ -3,13 +3,12 @@ using BLL.AutoMapper;
 using BLL.Services;
 using BLL.Services.Interfaces;
 using DAL.Context;
+using DAL.Extensions;
 using DAL.Repositories;
 using DAL.Repositories.Interfaces;
 using DAL.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PL.AutoMapper;
-using PL.ViewModels;
 
 namespace PL
 {
@@ -25,11 +24,7 @@ namespace PL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var sqlConnectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<MssqlContext>(options => options.UseSqlServer(sqlConnectionString));
-
-            services.AddDefaultIdentity<UserViewModel>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<MssqlContext>();
+            ServiceConfiguration.ConfigureServices(services, Configuration);
 
             services.AddSingleton(new MapperConfiguration(mc =>
             {
@@ -39,9 +34,13 @@ namespace PL
 
             // Services:
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IInterestService, InterestService>();
+            services.AddScoped<IAccountService, AccountService>();
 
             // Repositories:
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IInterestRepository, InterestRepository>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<MssqlContext, MssqlContext>();

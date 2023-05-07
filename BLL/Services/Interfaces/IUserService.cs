@@ -1,16 +1,17 @@
 ﻿using BLL.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Services.Interfaces
 {
     public interface IUserService
     {
-        public Task<UserModel> AddAsync(UserModel model);
+        public Task<IdentityResult> AddAsync(UserModel model, string password);
 
-        public Task<UserModel?> UpdateAsync(UserModel model);
+        public Task<IdentityResult> UpdateAsync(UserModel model);
 
-        public Task<UserModel?> DeletePermanentlyAsync(UserModel model);
+        public Task<IdentityResult> DeletePermanentlyAsync(UserModel model);
 
-        public Task<UserModel?> DeleteTemporarilyAsync(Guid id);
+        public Task<IdentityResult> DeleteTemporarilyAsync(UserModel model);
 
         public Task<List<UserModel>> GetAllAsync(bool includeDeleted = false);
 
