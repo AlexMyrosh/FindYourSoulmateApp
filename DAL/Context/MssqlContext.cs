@@ -1,4 +1,6 @@
-﻿using DAL.Models;
+﻿using Bogus;
+using DAL.Enums;
+using DAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

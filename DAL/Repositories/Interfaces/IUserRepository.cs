@@ -6,6 +6,8 @@ namespace DAL.Repositories.Interfaces
 {
     public interface IUserRepository
     {
+
+        public Task GenerateTestUsers(int count);
         public Task<IdentityResult> AddAsync(User entity, string password);
 
         public User UpdateAsync(User entity);

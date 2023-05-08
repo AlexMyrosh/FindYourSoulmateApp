@@ -45,6 +45,13 @@ namespace PL
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<MssqlContext, MssqlContext>();
 
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromDays(7);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
             services.AddMvc();
             services.AddRazorPages();
             services.AddControllersWithViews(options =>
@@ -65,6 +72,7 @@ namespace PL
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
 
             app.UseAuthentication();
             app.UseAuthorization();

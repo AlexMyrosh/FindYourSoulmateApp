@@ -1,24 +1,15 @@
-﻿using AutoMapper;
-using BLL.Services.Interfaces;
-using DAL.Models;
+﻿using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using PL.ViewModels;
 
 namespace PL.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IUserService _userService;
-        private readonly IProfileService _profileService;
-        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-        public HomeController(IUserService userService,
-            IProfileService profileService, 
-            IMapper mapper)
+        public HomeController(IUserRepository userRepository)
         {
-            _userService = userService;
-            _profileService = profileService;
-            _mapper = mapper;
+            _userRepository = userRepository;
         }
 
         // GET: HomeController
