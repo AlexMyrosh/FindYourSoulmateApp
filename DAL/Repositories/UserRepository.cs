@@ -1,4 +1,6 @@
-﻿using DAL.Models;
+﻿using System.Security.Claims;
+using DAL.Context;
+using DAL.Models;
 using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,10 +10,12 @@ namespace DAL.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<User> _userManager;
+        private readonly MssqlContext _context;
 
-        public UserRepository(UserManager<User> userManager)
+        public UserRepository(UserManager<User> userManager, MssqlContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         public async Task<IdentityResult> AddAsync(User entity, string password)
@@ -19,9 +23,20 @@ namespace DAL.Repositories
             return await _userManager.CreateAsync(entity, password);
         }
 
-        public async Task<IdentityResult> UpdateAsync(User entity)
+        public User UpdateAsync(User entity)
         {
-            return await _userManager.UpdateAsync(entity);
+            return _context.Users.Update(entity).Entity;
+        }
+
+        public async Task<IdentityResult> ChangeEmailAsync(User user, string newEmail)
+        {
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, newEmail);
+            return await _userManager.ChangeEmailAsync(user, newEmail, token);
+        }
+
+        public async Task<IdentityResult> ChangeUsernameAsync(User user, string newUsername)
+        {
+            return await _userManager.SetUserNameAsync(user, newUsername);
         }
 
         public async Task<IdentityResult> DeletePermanentlyAsync(User entity)
@@ -50,16 +65,16 @@ namespace DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<User?> GetByIdAsync(Guid id)
+        public async Task<User?> GetByIdAsync(string id)
         {
-            return await _userManager.FindByIdAsync(id.ToString());
+            return await _userManager.FindByIdAsync(id);
         }
 
-        public async Task<User?> GetByIdWithDetailsAsync(Guid id)
+        public async Task<User?> GetByIdWithDetailsAsync(string id)
         {
             return await _userManager.Users
                 .Include(entity => entity.Interests)
-                .Where(entity => entity.Id == id.ToString())
+                .Where(entity => entity.Id == id)
                 .FirstOrDefaultAsync();
         }
 
@@ -106,6 +121,22 @@ namespace DAL.Repositories
                 .Include(entity => entity.Interests)
                 .Where(entity => entity.PhoneNumber == phoneNumber)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<User?> GetCurrentUserWithDetailsAsync(ClaimsPrincipal principal)
+        {
+            var id = _userManager.GetUserId(principal);
+            var result = await _userManager.Users
+                .Include(u => u.Interests)
+                .Where(u => u.Id == id)
+                .FirstOrDefaultAsync();
+
+            return result;
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
         }
     }
 }

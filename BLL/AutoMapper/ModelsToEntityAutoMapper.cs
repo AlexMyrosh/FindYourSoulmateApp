@@ -10,7 +10,17 @@ namespace BLL.AutoMapper
     {
         public ModelsToEntityAutoMapper()
         {
-            CreateMap<UserModel, User>().ReverseMap();
+            CreateMap<UserModel, User>()
+                .ForMember(dest => dest.FirstName, conf => conf.MapFrom(source => source.FirstName))
+                .ForMember(dest => dest.LastName, conf => conf.MapFrom(source => source.LastName))
+                .ForMember(dest => dest.Age, conf => conf.MapFrom(source => source.Age))
+                .ForMember(dest => dest.BirthDate, conf => conf.MapFrom(source => source.BirthDate))
+                .ForMember(dest => dest.Gender, conf => conf.MapFrom(source => source.Gender))
+                .ForMember(dest => dest.Bio, conf => conf.MapFrom(source => source.Bio))
+                .ForMember(dest => dest.LookingForGender, conf => conf.MapFrom(source => source.LookingForGender))
+                .ForMember(dest => dest.RelationType, conf => conf.MapFrom(source => source.RelationType));
+
+            CreateMap<User, UserModel>();
             CreateMap<InterestModel, Interest>().ReverseMap();
 
             CreateMap<GenderModel, Gender>().ReverseMap();

@@ -20,6 +20,8 @@ namespace PL.ViewModels
 
         public List<InterestViewModel>? Interests { get; set; }
 
+        public List<Guid>? SelectedInterests { get; set; } = new List<Guid>();
+
         public LookingForGenderViewModel LookingForGender { get; set; }
 
         public RelationTypeViewModel RelationType { get; set; }

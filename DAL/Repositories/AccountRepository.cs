@@ -27,5 +27,10 @@ namespace DAL.Repositories
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task RefreshSignInAsync(User user)
+        {
+            await _signInManager.RefreshSignInAsync(user);
+        }
     }
 }

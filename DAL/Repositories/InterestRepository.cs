@@ -44,6 +44,7 @@ namespace DAL.Repositories
         {
             return await _sqlContext.Interests
                 .Where(entity => entity.IsDeleted == false || entity.IsDeleted == includeDeleted)
+                .AsNoTracking()
                 .ToListAsync();
         }
 

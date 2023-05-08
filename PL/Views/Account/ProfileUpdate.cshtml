@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using PL.Enums
+@model PL.ViewModels.UserViewModel
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Profile</h1>
+
+<form method="post" asp-controller="Account" asp-action="ProfileUpdate" method="post">
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Age"></label>
+        <input asp-for="Age" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="BirthDate"></label>
+        <input asp-for="BirthDate" type="date" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Gender"></label>
+        <select asp-for="Gender" asp-items="Html.GetEnumSelectList<GenderViewModel>()" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Bio"></label>
+        <textarea asp-for="Bio" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="Interests"></label>
+        <select asp-for="SelectedInterests" asp-items="@(new SelectList(Model.Interests, "Id", "Name"))" class="form-control" multiple></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="LookingForGender"></label>
+        <select asp-for="LookingForGender" asp-items="Html.GetEnumSelectList<GenderViewModel>()" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="RelationType"></label>
+        <select asp-for="RelationType" asp-items="Html.GetEnumSelectList<RelationTypeViewModel>()" class="form-control"></select>
+    </div>
+
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <button type="submit" class="btn btn-primary">Update Profile</button>
+
+</form>

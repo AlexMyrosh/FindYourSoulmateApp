@@ -20,11 +20,6 @@ namespace DAL.Context
                 .WithMany(i => i.Users)
                 .UsingEntity(j => j.ToTable("InterestsUsers"));
 
-            modelBuilder.Entity<Interest>()
-                .Property(u => u.Id)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("NEWID()");
-
             modelBuilder.Entity<Interest>().HasData(new List<Interest>
             {
                 new Interest { Id = new Guid("b6b6b5b6-376e-4280-a44e-7912ce9fdb18"), Name = "Art" },

@@ -1,5 +1,6 @@
 ﻿using DAL.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace DAL.Repositories.Interfaces
 {
@@ -7,7 +8,11 @@ namespace DAL.Repositories.Interfaces
     {
         public Task<IdentityResult> AddAsync(User entity, string password);
 
-        public Task<IdentityResult> UpdateAsync(User entity);
+        public User UpdateAsync(User entity);
+
+        public Task<IdentityResult> ChangeEmailAsync(User user, string newEmail);
+
+        public Task<IdentityResult> ChangeUsernameAsync(User user, string newUsername);
 
         public Task<IdentityResult> DeletePermanentlyAsync(User entity);
 
@@ -17,9 +22,9 @@ namespace DAL.Repositories.Interfaces
 
         public Task<List<User>> GetAllWithDetailsAsync(bool includeDeleted = false);
 
-        public Task<User?> GetByIdAsync(Guid id);
+        public Task<User?> GetByIdAsync(string id);
 
-        public Task<User?> GetByIdWithDetailsAsync(Guid id);
+        public Task<User?> GetByIdWithDetailsAsync(string id);
         
         public Task<User?> GetByEmailAsync(string email);
 
@@ -32,5 +37,9 @@ namespace DAL.Repositories.Interfaces
         public Task<User?> GetByPhoneNumberAsync(string phoneNumber);
 
         public Task<User?> GetByPhoneNumberWithDetailsAsync(string phoneNumber);
+
+        public Task<User?> GetCurrentUserWithDetailsAsync(ClaimsPrincipal principal);
+
+        public Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
     }
 }

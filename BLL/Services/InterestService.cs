@@ -23,7 +23,6 @@ namespace BLL.Services
 
             var entity = _mapper.Map<Interest>(model);
             var addedEntity = await _unitOfWork.InterestRepository.AddAsync(entity);
-            await _unitOfWork.SaveChangesAsync();
             var addedModel = _mapper.Map<InterestModel>(addedEntity);
             return addedModel;
         }
@@ -63,6 +62,7 @@ namespace BLL.Services
         public async Task<List<InterestModel>> GetAllAsync(bool includeDeleted = false)
         {
             var entities = await _unitOfWork.InterestRepository.GetAllAsync(includeDeleted);
+            _unitOfWork.ClearTracking();
             var models = _mapper.Map<List<InterestModel>>(entities);
             return models;
         }

@@ -1,4 +1,3 @@
-using AutoMapper;
 using BLL.AutoMapper;
 using BLL.Services;
 using BLL.Services.Interfaces;
@@ -26,11 +25,11 @@ namespace PL
         {
             ServiceConfiguration.ConfigureServices(services, Configuration);
 
-            services.AddSingleton(new MapperConfiguration(mc =>
+            services.AddAutoMapper(config =>
             {
-                mc.AddProfile(new ModelsToEntityAutoMapper());
-                mc.AddProfile(new ModelsToViewModelsAutoMapper());
-            }).CreateMapper());
+                config.AddProfile(new ModelsToEntityAutoMapper());
+                config.AddProfile(new ModelsToViewModelsAutoMapper());
+            }, typeof(Startup));
 
             // Services:
             services.AddScoped<IUserService, UserService>();

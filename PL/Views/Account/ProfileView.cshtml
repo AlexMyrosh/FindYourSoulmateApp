@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using PL.Enums
+@model PL.ViewModels.UserViewModel
+@{
+    ViewData["Title"] = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Profile</h1>
+
+<div class="form-group">
+    <label asp-for="FirstName"></label>: @Model.FirstName
+</div>
+<div class="form-group">
+    <label asp-for="LastName"></label>: @Model.LastName
+</div>
+<div class="form-group">
+    <label asp-for="Age"></label>: @Model.Age
+</div>
+<div class="form-group">
+    <label asp-for="BirthDate"></label>: @Model.BirthDate.ToShortDateString()
+</div>
+<div class="form-group">
+    <label asp-for="Gender"></label>: @Model.Gender
+</div>
+<div class="form-group">
+    <label asp-for="Bio"></label>: @Model.Bio
+</div>
+<div class="form-group">
+    <label asp-for="Interests"></label>: @string.Join(", ", Model.Interests.Select(i => i.Name))
+</div>
+<div class="form-group">
+    <label asp-for="LookingForGender"></label>: @Model.LookingForGender
+</div>
+<div class="form-group">
+    <label asp-for="RelationType"></label>: @Model.RelationType
+</div>
+<div class="form-group">
+    <label asp-for="UserName"></label>: @Model.UserName
+</div>
+<div class="form-group">
+    <label asp-for="Email"></label>: @Model.Email
+</div>
+<div class="form-group">
+    <label asp-for="PhoneNumber"></label>: @Model.PhoneNumber
+</div>
+
+<a class="btn btn-primary" asp-controller="Account" asp-action="ProfileUpdate">Edit Profile</a>
+<a asp-controller="Account" asp-action="ChangePassword">Change Password</a>

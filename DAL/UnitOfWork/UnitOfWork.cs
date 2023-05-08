@@ -27,7 +27,7 @@ namespace DAL.UnitOfWork
         {
             get
             {
-                _userRepository ??= new UserRepository(_userManager);
+                _userRepository ??= new UserRepository(_userManager, _sqlContext);
                 return _userRepository;
             }
         }
