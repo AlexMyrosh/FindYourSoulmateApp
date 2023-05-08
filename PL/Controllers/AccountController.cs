@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Models;
 using BLL.Services.Interfaces;
+using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PL.Models;
@@ -147,8 +148,45 @@ namespace PL.Controllers
 
             // Save the changes
             await _userService.UpdateAsync(userModel);
-
+            await _userService.UpdateEmail(User, viewModel.Email);
+            await _userService.UpdateUsername(User, viewModel.UserName);
             return RedirectToAction("ProfileView");
+        }
+
+        // GET: /Account/ChangePassword
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userService.GetCurrentUserWithDetailsAsync(User);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            var result = await _userService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
+
+            await _accountService.RefreshSignInAsync(user);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

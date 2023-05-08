@@ -10,5 +10,7 @@ namespace DAL.Repositories.Interfaces
         public Task<SignInResult> SignInAsync(string username, string password, bool isPersistent = false);
 
         public Task SignOutAsync();
+
+        public Task RefreshSignInAsync(User user);
     }
 }

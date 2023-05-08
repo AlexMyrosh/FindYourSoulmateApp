@@ -33,6 +33,8 @@ namespace BLL.Services
             if (model == null) throw new ArgumentNullException(nameof(model));
 
             var entity = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(model.Id);
+            var isEmailChanged = entity.Email != model.Email;
+            var isUsernameChanged = entity.UserName != model.UserName;
             entity = _mapper.Map(model, entity);
 
             entity.Interests = new List<Interest>();
@@ -46,8 +48,43 @@ namespace BLL.Services
             }
 
             var result = _unitOfWork.UserRepository.UpdateAsync(entity);
+
+            if (isEmailChanged)
+            {
+                await _unitOfWork.UserRepository.ChangeEmailAsync(entity, entity.Email);
+            }
+
+            if (isUsernameChanged)
+            {
+                await _unitOfWork.UserRepository.ChangeUsernameAsync(entity, entity.UserName);
+            }
+
             await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<UserModel>(result);
+        }
+
+        public async Task UpdateEmail(ClaimsPrincipal principal, string newEmail)
+        {
+            var entity = await _unitOfWork.UserRepository.GetCurrentUserWithDetailsAsync(principal);
+            if (entity == null) return;
+
+            if (entity.Email != newEmail)
+            {
+                await _unitOfWork.UserRepository.ChangeEmailAsync(entity, newEmail);
+                await _unitOfWork.AccountRepository.RefreshSignInAsync(entity);
+            }
+        }
+
+        public async Task UpdateUsername(ClaimsPrincipal principal, string newUsername)
+        {
+            var entity = await _unitOfWork.UserRepository.GetCurrentUserWithDetailsAsync(principal);
+            if (entity == null) return;
+
+            if (entity.UserName != newUsername)
+            {
+                await _unitOfWork.UserRepository.ChangeUsernameAsync(entity, newUsername);
+                await _unitOfWork.AccountRepository.RefreshSignInAsync(entity);
+            }
         }
 
         public async Task<IdentityResult> DeletePermanentlyAsync(UserModel model)
@@ -159,6 +196,12 @@ namespace BLL.Services
             var entity = await _unitOfWork.UserRepository.GetCurrentUserWithDetailsAsync(principal);
             var model = _mapper.Map<UserModel>(entity);
             return model;
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(UserModel user, string currentPassword, string newPassword)
+        {
+            var entity = await _unitOfWork.UserRepository.GetByIdAsync(user.Id);
+            return await _unitOfWork.UserRepository.ChangePasswordAsync(entity, currentPassword, newPassword);
         }
     }
 }

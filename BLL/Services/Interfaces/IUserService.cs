@@ -1,4 +1,5 @@
 ﻿using BLL.Models;
+using DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -9,6 +10,10 @@ namespace BLL.Services.Interfaces
         public Task<IdentityResult> AddAsync(UserModel model, string password);
 
         public Task<UserModel> UpdateAsync(UserModel model);
+
+        public Task UpdateEmail(ClaimsPrincipal principal, string newEmail);
+
+        public Task UpdateUsername(ClaimsPrincipal principal, string newUsername);
 
         public Task<IdentityResult> DeletePermanentlyAsync(UserModel model);
 
@@ -35,5 +40,7 @@ namespace BLL.Services.Interfaces
         public Task<UserModel?> GetByPhoneNumberWithDetailsAsync(string phoneNumber);
 
         public Task<UserModel?> GetCurrentUserWithDetailsAsync(ClaimsPrincipal principal);
+
+        public Task<IdentityResult> ChangePasswordAsync(UserModel user, string currentPassword, string newPassword);
     }
 }

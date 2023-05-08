@@ -33,5 +33,11 @@ namespace BLL.Services
         {
             await _unitOfWork.AccountRepository.SignOutAsync();
         }
+
+        public async Task RefreshSignInAsync(UserModel user)
+        {
+            var entity = _mapper.Map<User>(user);
+            await _unitOfWork.AccountRepository.RefreshSignInAsync(entity);
+        }
     }
 }

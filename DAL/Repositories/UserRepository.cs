@@ -26,7 +26,17 @@ namespace DAL.Repositories
         public User UpdateAsync(User entity)
         {
             return _context.Users.Update(entity).Entity;
-            //return await _userManager.UpdateAsync(entity);
+        }
+
+        public async Task<IdentityResult> ChangeEmailAsync(User user, string newEmail)
+        {
+            var token = await _userManager.GenerateChangeEmailTokenAsync(user, newEmail);
+            return await _userManager.ChangeEmailAsync(user, newEmail, token);
+        }
+
+        public async Task<IdentityResult> ChangeUsernameAsync(User user, string newUsername)
+        {
+            return await _userManager.SetUserNameAsync(user, newUsername);
         }
 
         public async Task<IdentityResult> DeletePermanentlyAsync(User entity)
@@ -122,6 +132,11 @@ namespace DAL.Repositories
                 .FirstOrDefaultAsync();
 
             return result;
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
         }
     }
 }

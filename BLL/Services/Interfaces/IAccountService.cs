@@ -1,4 +1,5 @@
 ﻿using BLL.Models;
+using DAL.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace BLL.Services.Interfaces
@@ -10,5 +11,7 @@ namespace BLL.Services.Interfaces
         public Task<SignInResult> SignInAsync(string username, string password, bool isPersistent = false);
 
         public Task SignOutAsync();
+
+        public Task RefreshSignInAsync(UserModel user);
     }
 }

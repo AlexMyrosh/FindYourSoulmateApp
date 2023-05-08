@@ -10,6 +10,10 @@ namespace DAL.Repositories.Interfaces
 
         public User UpdateAsync(User entity);
 
+        public Task<IdentityResult> ChangeEmailAsync(User user, string newEmail);
+
+        public Task<IdentityResult> ChangeUsernameAsync(User user, string newUsername);
+
         public Task<IdentityResult> DeletePermanentlyAsync(User entity);
 
         public Task<IdentityResult> DeleteTemporarilyAsync(User entity);
@@ -35,5 +39,7 @@ namespace DAL.Repositories.Interfaces
         public Task<User?> GetByPhoneNumberWithDetailsAsync(string phoneNumber);
 
         public Task<User?> GetCurrentUserWithDetailsAsync(ClaimsPrincipal principal);
+
+        public Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
     }
 }
