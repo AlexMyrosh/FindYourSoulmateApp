@@ -1,0 +1,64 @@
+﻿@model PL.ViewModels.UserViewModel
+
+<div class="container mt-5">
+    <div id="userCards" class="row">
+        <div class="col-12 userCard">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="card" style="width: 35rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.FirstName @Model.LastName</h5>
+                        <p class="card-text">
+                            Age: @Model.Age<br />
+                            Gender: @Model.Gender<br />
+                            Relation Type: @Model.RelationType<br />
+                            Bio: @Model.Bio
+                        </p>
+                        <h6>Interests:</h6>
+                        <div class="row">
+                            @foreach (var interest in Model.Interests)
+                            {
+                                <div class="col mb-1">
+                                    <div class="card interest-card">
+                                        <div class="card-body">
+                                            <p class="card-title">@interest.Name</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button class="btn btn-success likeBtn" data-user-id="@Model.Id">Like</button>
+                            <button class="btn btn-danger dislikeBtn" data-user-id="@Model.Id">Dislike</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        $(".likeBtn, .dislikeBtn").click(function (e) {
+            //e.preventDefault();
+
+            var action = $(this).hasClass("likeBtn") ? "Like" : "Dislike";
+            var userId = $(this).data("userId");
+            var url = `/Profile/${action}`;
+
+            // Get the anti-forgery token
+            var token = $('[name=__RequestVerificationToken]').val();
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: { userId: userId },
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                success: function (response) {
+                    debugger;
+                    $("#card-container").html(response);
+                }
+            });
+        });
+    </script>
