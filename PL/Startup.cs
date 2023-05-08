@@ -35,6 +35,7 @@ namespace PL
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IInterestService, InterestService>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IProfileService, ProfileService>();
 
             // Repositories:
             services.AddScoped<IUserRepository, UserRepository>();

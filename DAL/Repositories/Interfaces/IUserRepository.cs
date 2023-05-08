@@ -41,5 +41,7 @@ namespace DAL.Repositories.Interfaces
         public Task<User?> GetCurrentUserWithDetailsAsync(ClaimsPrincipal principal);
 
         public Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+
+        public Task<List<User>> GetOtherUsersWithDetailsAsync(string currentUserId);
     }
 }

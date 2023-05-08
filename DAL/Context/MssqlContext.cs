@@ -20,6 +20,15 @@ namespace DAL.Context
                 .WithMany(i => i.Users)
                 .UsingEntity(j => j.ToTable("InterestsUsers"));
 
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.LikedUsers)
+                .WithMany(i => i.LikedByUsers)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserLikes",
+                    b => b.HasOne<User>().WithMany().HasForeignKey("LikedUserId"),
+                    b => b.HasOne<User>().WithMany().HasForeignKey("UserId"))
+                .ToTable("UserLikes");
+
             modelBuilder.Entity<Interest>().HasData(new List<Interest>
             {
                 new Interest { Id = new Guid("b6b6b5b6-376e-4280-a44e-7912ce9fdb18"), Name = "Art" },
