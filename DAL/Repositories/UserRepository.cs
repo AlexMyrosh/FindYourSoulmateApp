@@ -61,6 +61,9 @@ namespace DAL.Repositories
         {
             return await _userManager.Users
                 .Include(entity=> entity.Interests)
+                .Include(entity => entity.LikedByUsers)
+                .Include(entity => entity.LikedUsers)
+                .Include(entity => entity.Interests)
                 .Where(entity => entity.IsDeleted == false || entity.IsDeleted == includeDeleted)
                 .ToListAsync();
         }
@@ -74,6 +77,8 @@ namespace DAL.Repositories
         {
             return await _userManager.Users
                 .Include(entity => entity.Interests)
+                .Include(entity => entity.LikedUsers)
+                .Include(entity => entity.LikedByUsers)
                 .Where(entity => entity.Id == id)
                 .FirstOrDefaultAsync();
         }
@@ -89,6 +94,8 @@ namespace DAL.Repositories
         {
             return await _userManager.Users
                 .Include(entity => entity.Interests)
+                .Include(entity => entity.LikedByUsers)
+                .Include(entity => entity.LikedUsers)
                 .Where(entity => entity.Email == email)
                 .FirstOrDefaultAsync();
         }
@@ -104,6 +111,8 @@ namespace DAL.Repositories
         {
             return await _userManager.Users
                 .Include(entity => entity.Interests)
+                .Include(entity => entity.LikedByUsers)
+                .Include(entity => entity.LikedUsers)
                 .Where(entity => entity.UserName == username)
                 .FirstOrDefaultAsync();
         }
@@ -119,6 +128,8 @@ namespace DAL.Repositories
         {
             return await _userManager.Users
                 .Include(entity => entity.Interests)
+                .Include(entity => entity.LikedByUsers)
+                .Include(entity => entity.LikedUsers)
                 .Where(entity => entity.PhoneNumber == phoneNumber)
                 .FirstOrDefaultAsync();
         }
@@ -128,6 +139,8 @@ namespace DAL.Repositories
             var id = _userManager.GetUserId(principal);
             var result = await _userManager.Users
                 .Include(u => u.Interests)
+                .Include(entity => entity.LikedByUsers)
+                .Include(entity => entity.LikedUsers)
                 .Where(u => u.Id == id)
                 .FirstOrDefaultAsync();
 
@@ -137,6 +150,16 @@ namespace DAL.Repositories
         public async Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
         {
             return await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
+        public async Task<List<User>> GetOtherUsersWithDetailsAsync(string currentUserId)
+        {
+            return await _userManager.Users
+                .Include(u => u.Interests)
+                .Include(entity => entity.LikedByUsers)
+                .Include(entity => entity.LikedUsers)
+                .Where(user => user.Id != currentUserId)
+                .ToListAsync();
         }
     }
 }

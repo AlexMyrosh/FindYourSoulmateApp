@@ -203,5 +203,12 @@ namespace BLL.Services
             var entity = await _unitOfWork.UserRepository.GetByIdAsync(user.Id);
             return await _unitOfWork.UserRepository.ChangePasswordAsync(entity, currentPassword, newPassword);
         }
+
+        public async Task<List<UserModel>> GetOtherUsersWithDetailsAsync(string currentUserId)
+        {
+            var entities = await _unitOfWork.UserRepository.GetOtherUsersWithDetailsAsync(currentUserId);
+            var models = _mapper.Map<List<UserModel>>(entities);
+            return models;
+        }
     }
 }

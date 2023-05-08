@@ -28,5 +28,9 @@ namespace DAL.Models
         public DateTime LastLogin { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public List<User> LikedUsers { get; set; }
+
+        public List<User> LikedByUsers { get; set; }
     }
 }

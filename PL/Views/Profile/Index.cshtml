@@ -1,0 +1,92 @@
+﻿@model List<PL.ViewModels.UserViewModel>
+
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .interest-card {
+        width: 150px;
+        border-radius: 1rem;
+    }
+</style>
+
+<div class="container mt-5">
+    <div id="userCards" class="row">
+        @foreach (var userCard in Model)
+        {
+            <div class="col-12 userCard" style="display: none;">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="card" style="width: 35rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">@userCard.FirstName @userCard.LastName</h5>
+                            <p class="card-text">
+                                Age: @userCard.Age<br/>
+                                Gender: @userCard.Gender<br/>
+                                Relation Type: @userCard.RelationType<br/>
+                                Bio: @userCard.Bio
+                            </p>
+                            <h6>Interests:</h6>
+                            <div class="row">
+                            @foreach (var interest in userCard.Interests)
+                            {
+                                <div class="col mb-1">
+                                    <div class="card interest-card">
+                                        <div class="card-body">
+                                            <p class="card-title">@interest.Name</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <button class="btn btn-success likeBtn" data-user-id="@userCard.Id">Like</button>
+                                <button class="btn btn-danger dislikeBtn" data-user-id="@userCard.Id">Dislike</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Show the first user card
+            $(".userCard").first().show();
+
+            $(".dislikeBtn").click(function () {
+                let currentCard = $(this).closest(".userCard");
+                currentCard.hide().next(".userCard").show();
+            });
+
+            // Like and Dislike button click handlers
+            $(".likeBtn").click(function () {
+                let currentCard = $(this).closest(".userCard");
+                let userId = $(this).data("user-id");
+                
+                // Include the AntiForgeryToken in the request
+                let antiForgeryToken = $('input[name="__RequestVerificationToken"]').val();
+
+                // Send like or dislike action to the server
+                $.ajax({
+                    type: 'POST',
+                    url: "/Profile/Like",
+                    data: {
+                        __RequestVerificationToken: antiForgeryToken,
+                        userId: userId
+                    },
+                    success: function (result) {
+                        // Hide the current card and show the next one
+                        currentCard.hide().next(".userCard").show();
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -42,5 +42,7 @@ namespace BLL.Services.Interfaces
         public Task<UserModel?> GetCurrentUserWithDetailsAsync(ClaimsPrincipal principal);
 
         public Task<IdentityResult> ChangePasswordAsync(UserModel user, string currentPassword, string newPassword);
+
+        public Task<List<UserModel>> GetOtherUsersWithDetailsAsync(string currentUserId);
     }
 }

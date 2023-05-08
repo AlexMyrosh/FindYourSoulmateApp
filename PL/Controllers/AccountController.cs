@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BLL.Models;
 using BLL.Services.Interfaces;
-using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PL.Models;
@@ -36,24 +35,31 @@ namespace PL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var userModel = _mapper.Map<UserModel>(model);
-                userModel.RegistrationDate = DateTime.UtcNow;
-                var result = await _userService.AddAsync(userModel, model.Password);
-                if (result.Succeeded)
+                if (ModelState.IsValid)
                 {
-                    await _accountService.SignInAsync(userModel, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    var userModel = _mapper.Map<UserModel>(model);
+                    userModel.RegistrationDate = DateTime.UtcNow;
+                    var result = await _userService.AddAsync(userModel, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await _accountService.SignInAsync(userModel, isPersistent: false);
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                return View(model);
             }
-
-            return View(model);
+            catch
+            {
+                return View("Error");
+            }
         }
 
         // GET: /Account/Login
@@ -68,22 +74,30 @@ namespace PL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
-            if (!ModelState.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+
+                returnUrl ??= Url.Content("~/");
+
+                var result = await _accountService.SignInAsync(model.UserName, model.Password, model.RememberMe);
+
+                if (result.Succeeded)
+                {
+                    return LocalRedirect(returnUrl);
+                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return View(model);
+
             }
-
-            returnUrl ??= Url.Content("~/");
-
-            var result = await _accountService.SignInAsync(model.UserName, model.Password, model.RememberMe);
-
-            if (result.Succeeded)
+            catch
             {
-                return LocalRedirect(returnUrl);
+                return View("Error");
             }
-
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View(model);
         }
 
         // POST: /Account/Logout
@@ -91,66 +105,94 @@ namespace PL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _accountService.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            try
+            {
+                await _accountService.SignOutAsync();
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return View("Error");
+            }
         }
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> ProfileView()
         {
-            var userModel = await _userService.GetCurrentUserWithDetailsAsync(User);
-            if (userModel == null)
+            try
             {
-                return NotFound("User not found.");
-            }
+                var userModel = await _userService.GetCurrentUserWithDetailsAsync(User);
+                if (userModel == null)
+                {
+                    return NotFound("User not found.");
+                }
 
-            var userViewModel = _mapper.Map<UserViewModel>(userModel);
-            return View(userViewModel);
+                var userViewModel = _mapper.Map<UserViewModel>(userModel);
+                return View(userViewModel);
+            }
+            catch
+            {
+                return View("Error");
+            }
         }
 
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> ProfileUpdate()
         {
-            var userModel = await _userService.GetCurrentUserWithDetailsAsync(User);
-            if (userModel == null)
+            try
             {
-                return NotFound("User not found.");
-            }
-            
-            var userViewModel = _mapper.Map<UserViewModel>(userModel);
-            var interestModels = await _interestService.GetAllAsync();
-            userViewModel.Interests = _mapper.Map<List<InterestViewModel>>(interestModels);
+                var userModel = await _userService.GetCurrentUserWithDetailsAsync(User);
+                if (userModel == null)
+                {
+                    return NotFound("User not found.");
+                }
 
-            return View(userViewModel);
+                var userViewModel = _mapper.Map<UserViewModel>(userModel);
+                var interestModels = await _interestService.GetAllAsync();
+                userViewModel.Interests = _mapper.Map<List<InterestViewModel>>(interestModels);
+
+                return View(userViewModel);
+            }
+            catch
+            {
+                return View("Error");
+            }
         }
 
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> ProfileUpdate(UserViewModel viewModel)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                var interestModels = await _interestService.GetAllAsync();
-                viewModel.Interests = _mapper.Map<List<InterestViewModel>>(interestModels);
-                return View(viewModel);
+                if (!ModelState.IsValid)
+                {
+                    var interestModels = await _interestService.GetAllAsync();
+                    viewModel.Interests = _mapper.Map<List<InterestViewModel>>(interestModels);
+                    return View(viewModel);
+                }
+
+                var userModel = await _userService.GetCurrentUserWithDetailsAsync(User);
+
+                if (userModel == null)
+                {
+                    return NotFound("User not found.");
+                }
+
+                userModel = _mapper.Map(viewModel, userModel);
+
+                // Save the changes
+                await _userService.UpdateAsync(userModel);
+                await _userService.UpdateEmail(User, viewModel.Email);
+                await _userService.UpdateUsername(User, viewModel.UserName);
+                return RedirectToAction("ProfileView");
             }
-
-            var userModel = await _userService.GetCurrentUserWithDetailsAsync(User);
-
-            if (userModel == null)
+            catch
             {
-                return NotFound("User not found.");
+                return View("Error");
             }
-
-            userModel = _mapper.Map(viewModel, userModel);
-
-            // Save the changes
-            await _userService.UpdateAsync(userModel);
-            await _userService.UpdateEmail(User, viewModel.Email);
-            await _userService.UpdateUsername(User, viewModel.UserName);
-            return RedirectToAction("ProfileView");
         }
 
         // GET: /Account/ChangePassword
@@ -164,29 +206,37 @@ namespace PL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return View(model);
-            }
-
-            var user = await _userService.GetCurrentUserWithDetailsAsync(User);
-            if (user == null)
-            {
-                return NotFound("User not found.");
-            }
-
-            var result = await _userService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
+                if (!ModelState.IsValid)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    return View(model);
                 }
-                return View(model);
-            }
 
-            await _accountService.RefreshSignInAsync(user);
-            return RedirectToAction("Index", "Home");
+                var user = await _userService.GetCurrentUserWithDetailsAsync(User);
+                if (user == null)
+                {
+                    return NotFound("User not found.");
+                }
+
+                var result = await _userService.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+
+                    return View(model);
+                }
+
+                await _accountService.RefreshSignInAsync(user);
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return View("Error");
+            }
         }
     }
 }
