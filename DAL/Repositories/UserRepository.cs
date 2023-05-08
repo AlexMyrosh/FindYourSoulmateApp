@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using Bogus;
 using DAL.Context;
+using DAL.Enums;
 using DAL.Models;
 using DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +18,55 @@ namespace DAL.Repositories
         {
             _userManager = userManager;
             _context = context;
+        }
+
+        public async Task GenerateTestUsers(int count)
+        {
+            var fakeUserGenerator = new Faker<User>()
+                .RuleFor(u => u.FirstName, f => f.Name.FirstName())
+                .RuleFor(u => u.LastName, f => f.Name.LastName())
+                .RuleFor(u => u.Age, f => f.Random.Int(18, 50))
+                .RuleFor(u => u.BirthDate, f => f.Date.Past(18))
+                .RuleFor(u => u.Gender, f => f.PickRandom<Gender>())
+                .RuleFor(u => u.LookingForGender, f => f.PickRandom<LookingForGender>())
+                .RuleFor(u => u.RelationType, f => f.PickRandom<RelationType>())
+                .RuleFor(u => u.RegistrationDate, DateTime.Now)
+                .RuleFor(u => u.Bio, f => f.Lorem.Paragraph())
+                .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName))
+                .RuleFor(u => u.UserName, (f, u) => f.Internet.UserName(u.FirstName, u.LastName))
+                .RuleFor(u => u.PhoneNumber, f => f.Phone.PhoneNumber());
+
+            var password = "tvj9BuZ7+";
+
+            var users = fakeUserGenerator.Generate(count);
+
+            foreach (var user in users)
+            {
+                user.Interests = await GetRandomInterests(5);
+                await AddAsync(user, password);
+            }
+        }
+
+        private async Task<List<Interest>> GetRandomInterests(int count)
+        {
+            var allInterests = await _context.Interests.ToListAsync();
+            var result = new List<Interest>();
+            var rnd = new Random();
+            List<int> usedInterestIndexes = new List<int>();
+            for (int i = 0; i < count; )
+            {
+                var interestIndex = rnd.Next(0, allInterests.Count);
+                if (usedInterestIndexes.Contains(interestIndex))
+                {
+                    continue;
+                }
+
+                usedInterestIndexes.Add(interestIndex);
+                result.Add(allInterests[interestIndex]);
+                i++;
+            }
+            
+            return result;
         }
 
         public async Task<IdentityResult> AddAsync(User entity, string password)

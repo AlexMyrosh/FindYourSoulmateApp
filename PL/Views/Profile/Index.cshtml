@@ -1,4 +1,4 @@
-﻿@model PL.ViewModels.UserViewModel
+﻿@model PL.ViewModels.UserProfileSelectionViewModel
 
 @{
     ViewData["Title"] = "Home";
@@ -10,8 +10,17 @@
         width: 150px;
         border-radius: 1rem;
     }
+
+    .selected-interest {
+        background-color: #b8e9ed; /* Change this to the desired color */
+        border-color: blue;
+    }
 </style>
 
-<div id="card-container">
+<div id="card-container" class="mt-5 mb-5">
     @await Html.PartialAsync("PartialViews/_UserProfileCard", Model)
+</div>
+
+<div class="d-flex justify-content-center" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 999;">
+    <div style="display: none" id="spinner" class="spinner-border" role="status"></div>
 </div>
