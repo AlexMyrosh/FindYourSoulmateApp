@@ -26,6 +26,7 @@ namespace BLL.AutoMapper
             CreateMap<GenderModel, Gender>().ReverseMap();
             CreateMap<LookingForGenderModel, LookingForGender>().ReverseMap();
             CreateMap<RelationTypeModel, RelationType>().ReverseMap();
+            CreateMap<ChatMessageModel, ChatMessage>().ReverseMap();
         }
     }
 }

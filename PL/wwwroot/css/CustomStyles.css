@@ -1,0 +1,16 @@
+﻿.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.interest-card {
+    width: 150px;
+    border-radius: 1rem;
+}
+
+.selected-interest {
+    background-color: #b8e9ed; /* Change this to the desired color */
+    border-color: blue;
+}

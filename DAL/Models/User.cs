@@ -32,5 +32,11 @@ namespace DAL.Models
         public List<User> LikedUsers { get; set; }
 
         public List<User> LikedByUsers { get; set; }
+
+        public List<ChatMessage> SentMessages { get; set; }
+
+        public List<ChatMessage> ReceivedMessages { get; set; }
+
+        public List<Contact> Contacts { get; set; }
     }
 }

@@ -51,6 +51,7 @@ namespace PL.AutoMapper
             CreateMap<RegisterViewModel, UserModel>().ReverseMap();
             CreateMap<LoginViewModel, UserViewModel>().ReverseMap();
             CreateMap<LoginViewModel, UserModel>().ReverseMap();
+            CreateMap<ChatViewModel, ChatMessageModel>().ReverseMap();
 
             CreateMap<GenderViewModel, GenderModel>().ReverseMap();
             CreateMap<LookingForGenderViewModel, LookingForGenderModel>().ReverseMap();

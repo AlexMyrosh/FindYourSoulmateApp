@@ -4,6 +4,7 @@ using DAL.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(MssqlContext))]
-    partial class MssqlContextModelSnapshot : ModelSnapshot
+    [Migration("20230509194327_New table for messages")]
+    partial class Newtableformessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,24 +55,6 @@ namespace DAL.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("ChatMessages");
-                });
-
-            modelBuilder.Entity("DAL.Models.Contact", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ContactUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactUserId");
-
-                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("DAL.Models.Interest", b =>
@@ -675,15 +660,6 @@ namespace DAL.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("DAL.Models.Contact", b =>
-                {
-                    b.HasOne("DAL.Models.User", "ContactUser")
-                        .WithMany("Contacts")
-                        .HasForeignKey("ContactUserId");
-
-                    b.Navigation("ContactUser");
-                });
-
             modelBuilder.Entity("InterestUser", b =>
                 {
                     b.HasOne("DAL.Models.Interest", null)
@@ -767,8 +743,6 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.User", b =>
                 {
-                    b.Navigation("Contacts");
-
                     b.Navigation("ReceivedMessages");
 
                     b.Navigation("SentMessages");

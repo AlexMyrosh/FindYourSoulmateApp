@@ -1,6 +1,4 @@
-﻿using Bogus;
-using DAL.Enums;
-using DAL.Models;
+﻿using DAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +12,10 @@ namespace DAL.Context
         }
 
         public DbSet<Interest> Interests { get; set; }
+
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+
+        public DbSet<Contact> Contacts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +32,18 @@ namespace DAL.Context
                     b => b.HasOne<User>().WithMany().HasForeignKey("LikedUserId"),
                     b => b.HasOne<User>().WithMany().HasForeignKey("UserId"))
                 .ToTable("UserLikes");
+
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(c => c.Sender)
+                .WithMany(u => u.SentMessages)
+                .HasForeignKey(c => c.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(c => c.Receiver)
+                .WithMany(u => u.ReceivedMessages)
+                .HasForeignKey(c => c.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Interest>().HasData(new List<Interest>
             {
