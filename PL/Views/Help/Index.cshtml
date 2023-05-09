@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PL.ViewModels.FeedbackViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Contact Us</h2>
+            <hr>
+            <form asp-controller="Help" asp-action="SendFeedback" method="post" class="contact-form">
+                <div class="form-group">
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Contact"></label>
+                    <input asp-for="Contact" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="Message"></label>
+                    <textarea asp-for="Message" class="form-control"></textarea>
+                </div>
+
+                <div class="text-danger" asp-validation-summary="All"></div>
+                <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h2>Contact Information</h2>
+            <hr>
+            <ul class="list-unstyled">
+                <li><i class="fa fa-map-marker"></i>Prospect Nauki, 9A, Kharkiv, Ukraine</li>
+                <li><i class="fa fa-phone"></i> (050)201-4596</li>
+                <li><i class="fa fa-envelope"></i>oleksandr.miroshnychenko@hneu.net</li>
+            </ul>
+        </div>
+    </div>
+</div>

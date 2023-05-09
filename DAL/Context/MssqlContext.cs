@@ -17,6 +17,8 @@ namespace DAL.Context
 
         public DbSet<Contact> Contacts { get; set; }
 
+        public DbSet<Feedback> Feedbacks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()

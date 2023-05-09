@@ -12,6 +12,8 @@ namespace DAL.UnitOfWork
 
         public IChatRepository ChatRepository { get; }
 
+        public IFeedbackRepository FeedbackRepository { get; }
+
         public void ClearTracking();
 
         public Task SaveChangesAsync();

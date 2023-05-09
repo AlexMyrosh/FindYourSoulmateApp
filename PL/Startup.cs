@@ -38,12 +38,14 @@ namespace PL
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IChatService, ChatService>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
 
             // Repositories:
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IInterestRepository, InterestRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<MssqlContext, MssqlContext>();
