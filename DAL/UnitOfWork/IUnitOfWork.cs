@@ -10,6 +10,8 @@ namespace DAL.UnitOfWork
 
         public IAccountRepository AccountRepository { get; }
 
+        public IChatRepository ChatRepository { get; }
+
         public void ClearTracking();
 
         public Task SaveChangesAsync();

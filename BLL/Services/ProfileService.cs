@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using BLL.Services.Interfaces;
 using DAL.UnitOfWork;
 
@@ -15,10 +16,23 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task LikeUser(string currentUserId, string likedUserId)
+        public async Task LikeUser(ClaimsPrincipal principal, string likedUserId)
         {
-            var currentUser = await _unitOfWork.UserRepository.GetByIdWithDetailsAsync(currentUserId);
-            currentUser.LikedUsers.Add(await _unitOfWork.UserRepository.GetByIdAsync(likedUserId));
+            var currentUser = await _unitOfWork.UserRepository.GetCurrentUserWithDetailsAsync(principal);
+
+            if (currentUser == null)
+            {
+                throw new ArgumentException(nameof(currentUser));
+            }
+
+            var likedUser = await _unitOfWork.UserRepository.GetByIdAsync(likedUserId);
+
+            if (likedUser == null)
+            {
+                throw new InvalidOperationException(nameof(likedUser));
+            }
+
+            currentUser.LikedUsers.Add(likedUser);
             _unitOfWork.UserRepository.UpdateAsync(currentUser);
             await _unitOfWork.SaveChangesAsync();
         }

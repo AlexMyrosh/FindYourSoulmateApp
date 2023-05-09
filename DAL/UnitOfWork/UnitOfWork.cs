@@ -15,6 +15,7 @@ namespace DAL.UnitOfWork
         private IUserRepository? _userRepository;
         private IInterestRepository? _interestRepository;
         private IAccountRepository? _accountRepository;
+        private IChatRepository? _chatRepository;
 
         public UnitOfWork(MssqlContext sqlContext, UserManager<User> userManager, SignInManager<User> signInManager)
         {
@@ -47,6 +48,15 @@ namespace DAL.UnitOfWork
             {
                 _accountRepository ??= new AccountRepository(_signInManager);
                 return _accountRepository;
+            }
+        }
+
+        public IChatRepository ChatRepository
+        {
+            get
+            {
+                _chatRepository ??= new ChatRepository(_sqlContext);
+                return _chatRepository;
             }
         }
 

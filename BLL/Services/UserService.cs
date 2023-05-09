@@ -210,5 +210,12 @@ namespace BLL.Services
             var models = _mapper.Map<List<UserModel>>(entities);
             return models;
         }
+
+        public async Task<List<UserModel>> GetUsersToShow(ClaimsPrincipal principal)
+        {
+            var entities = await _unitOfWork.UserRepository.GetUsersToShow(principal);
+            var models = _mapper.Map<List<UserModel>>(entities);
+            return models;
+        }
     }
 }

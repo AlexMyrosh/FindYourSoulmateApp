@@ -2,7 +2,7 @@
 {
     public class UserProfileSelectionViewModel
     {
-        public UserViewModel UserToDisplay { get; set; }
+        public List<UserViewModel> UsersToDisplay { get; set; }
 
         public UserViewModel CurrentUser { get; set; }
     }

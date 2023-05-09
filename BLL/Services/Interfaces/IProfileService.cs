@@ -1,7 +1,9 @@
-﻿namespace BLL.Services.Interfaces
+﻿using System.Security.Claims;
+
+namespace BLL.Services.Interfaces
 {
     public interface IProfileService
     {
-        public Task LikeUser(string currentUserId, string likedUserId);
+        public Task LikeUser(ClaimsPrincipal principal, string likedUserId);
     }
 }

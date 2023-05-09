@@ -1,5 +1,4 @@
 ﻿using BLL.Models;
-using DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -44,5 +43,7 @@ namespace BLL.Services.Interfaces
         public Task<IdentityResult> ChangePasswordAsync(UserModel user, string currentPassword, string newPassword);
 
         public Task<List<UserModel>> GetOtherUsersWithDetailsAsync(string currentUserId);
+
+        public Task<List<UserModel>> GetUsersToShow(ClaimsPrincipal principal);
     }
 }

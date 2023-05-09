@@ -8,6 +8,7 @@ using DAL.Repositories.Interfaces;
 using DAL.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using PL.AutoMapper;
+using PL.Hubs;
 
 namespace PL
 {
@@ -36,11 +37,13 @@ namespace PL
             services.AddScoped<IInterestService, InterestService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IChatService, ChatService>();
 
             // Repositories:
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IInterestRepository, InterestRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<MssqlContext, MssqlContext>();
@@ -52,6 +55,7 @@ namespace PL
                 options.Cookie.IsEssential = true;
             });
 
+            services.AddSignalR();
             services.AddMvc();
             services.AddRazorPages();
             services.AddControllersWithViews(options =>
@@ -80,6 +84,7 @@ namespace PL
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}");
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
         }
     }

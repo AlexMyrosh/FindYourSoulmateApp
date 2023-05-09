@@ -212,5 +212,29 @@ namespace DAL.Repositories
                 .Where(user => user.Id != currentUserId)
                 .ToListAsync();
         }
+
+        public async Task<List<User>> GetUsersToShow(ClaimsPrincipal principal)
+        {
+            var currentUserId = _userManager.GetUserId(principal);
+            var currentUser = await _userManager.Users
+                .Include(u => u.Interests)
+                .Where(u => u.Id == currentUserId)
+                .FirstOrDefaultAsync();
+
+            if (currentUser == null)
+            {
+                throw new NullReferenceException(nameof(currentUser));
+            }
+
+            var usersToShow = await _context.Users
+                .Include(u => u.Interests)
+                .Where(u => u.Id != currentUser.Id)
+                .Where(profile => Math.Abs(currentUser.Age - profile.Age) <= 10)
+                .ToListAsync();
+
+            return usersToShow.Where(profile => currentUser.Interests.Select(i => i.Id).Intersect(profile.Interests.Select(i => i.Id)).Any())
+                .OrderByDescending(user => user.Interests.Select(i => i.Id).Intersect(currentUser.Interests.Select(i => i.Id)).Count())
+                .ToList();
+        }
     }
 }
