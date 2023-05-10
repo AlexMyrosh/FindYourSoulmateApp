@@ -1,35 +1,45 @@
-﻿const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/chatHub")
-    .build();
+﻿"use strict";
 
-connection.on("ReceiveMessage", (user, message) => {
-    const encodedMessage = $("<div>").text(`${user}: ${message}`);
-    $("#messagesList").append(encodedMessage);
+var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+
+//Disable send button until connection is established
+document.getElementById("sendPrivateButton").disabled = true;
+
+connection.on("ReceivePrivateMessage", function (fromUser, message) {
+    var msg = fromUser + ": " + message;
+    var li = document.createElement("li");
+    li.textContent = msg;
+    document.getElementById("messageList").appendChild(li);
 });
 
-connection.start().catch(err => console.error(err.toString()));
-
-$("#sendButton").on("click", () => {
-    const user = $("#userInput").val();
-    const message = $("#messageInput").val();
-    connection.invoke("SendMessage", user, message).catch(err => console.error(err.toString()));
+connection.start().then(function () {
+    document.getElementById("sendPrivateButton").disabled = false;
+}).catch(function (err) {
+    return console.error(err.toString());
 });
 
-// Add a click event listener for contacts
-$("#contactsList").on("click", "li", function () {
-    const contactId = $(this).data("contact-id");
-
-    // Clear the existing messages and load the new conversation
-    $("#messagesList").empty();
-    loadConversation(contactId);
-
-    // Set the selected contact as active
-    $("#contactsList li").removeClass("active");
-    $(this).addClass("active");
+document.getElementById("sendPrivateButton").addEventListener("click", function (event) {
+    var user = document.getElementById("private-user").value;
+    var message = document.getElementById("private-message").value;
+    connection.invoke("SendPrivateMessage", user, message).catch(function (err) {
+        return console.error(err.toString());
+    });
+    event.preventDefault();
 });
 
-// Function to load a conversation with a given contactId
-function loadConversation(contactId) {
-    // Load messages from the server and populate the chat area
-    // You can call your API to get the conversation data and append it to the messagesList
-}
+document.getElementById("getHistoryButton").addEventListener("click", function (event) {
+    var user = document.getElementById("private-user").value;
+    connection.invoke("GetHistory", user).then(function (history) {
+        debugger;
+        var messages = JSON.parse(history);
+        var messageList = document.getElementById("messageList");
+        messageList.innerHTML = '';
+        for (var i = 0; i < messages.length; i++) {
+            var msg = messages[i].fromUser + ": " + messages[i].message;
+            var li = document.createElement("li");
+            li.textContent = msg;
+            messageList.appendChild(li);
+        }
+    });
+    event.preventDefault();
+});

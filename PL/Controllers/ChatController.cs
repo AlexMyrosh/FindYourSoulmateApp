@@ -19,59 +19,50 @@ namespace PL.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index(string userId)
+        public IActionResult Index()
         {
-            // Get chat messages between the current user and the selected user
-            var currentUserId = (await _userService.GetCurrentUserWithDetailsAsync(User)).Id;
-
-            var messages = await _chatService.GetMessagesWithDetailsAsync(currentUserId, userId);
-
-            //var messages = await _context.ChatMessages
-            //    .Where(m => (m.SenderId == currentUserId && m.ReceiverId == userId) || (m.SenderId == userId && m.ReceiverId == currentUserId))
-            //    .Include(m => m.Sender)
-            //    .ToListAsync();
-
-            //var viewModel = messages.Select(m => new ChatMessageViewModel
-            //{
-            //    SenderId = m.SenderId,
-            //    ReceiverId = m.ReceiverId,
-            //    Content = m.Content,
-            //    Timestamp = m.Timestamp,
-            //    Sender = m.Sender
-            //}).ToList();
-
-            var viewModel = new ChatViewModel
-            {
-                MessageHistory = _mapper.Map<List<ChatMessageViewModel>>(messages),
-                ChatMessage = new ChatMessageViewModel()
-            };
-
-            return View(viewModel);
+            return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SendMessage(ChatViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                //var message = new ChatMessage
-                //{
-                //    SenderId = (await _userService.GetCurrentUserWithDetailsAsync(User)).Id,
-                //    ReceiverId = model.ReceiverId,
-                //    Content = model.Content,
-                //    Timestamp = DateTime.UtcNow
-                //};
+        //public async Task<IActionResult> Index(string userId)
+        //{
+        //    // Get chat messages between the current user and the selected user
+        //    var currentUserId = (await _userService.GetCurrentUserWithDetailsAsync(User)).Id;
 
-                var message = _mapper.Map<ChatMessageModel>(model);
+        //    var messages = await _chatService.GetMessagesWithDetailsAsync(currentUserId, userId);
 
-                await _chatService.AddMessageAsync(message);
+        //    var viewModel = new ChatViewModel
+        //    {
+        //        MessageHistory = _mapper.Map<List<ChatMessageViewModel>>(messages),
+        //        ChatMessage = new ChatMessageViewModel()
+        //    };
 
-                return RedirectToAction("Index", new { userId = model.ChatMessage.ReceiverId });
-            }
+        //    return View(viewModel);
+        //}
 
-            var messages = await _chatService.GetMessagesWithDetailsAsync(model.ChatMessage.SenderId, model.ChatMessage.ReceiverId);
-            model.MessageHistory = _mapper.Map<List<ChatMessageViewModel>>(messages);
-            return View("Index", model);
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> SendMessage(ChatViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        //var message = new ChatMessage
+        //        //{
+        //        //    SenderId = (await _userService.GetCurrentUserWithDetailsAsync(User)).Id,
+        //        //    ReceiverId = model.ReceiverId,
+        //        //    Content = model.Content,
+        //        //    Timestamp = DateTime.UtcNow
+        //        //};
+
+        //        var message = _mapper.Map<ChatMessageModel>(model);
+
+        //        await _chatService.AddMessageAsync(message);
+
+        //        return RedirectToAction("Index", new { userId = model.ChatMessage.ReceiverId });
+        //    }
+
+        //    var messages = await _chatService.GetMessagesWithDetailsAsync(model.ChatMessage.SenderId, model.ChatMessage.ReceiverId);
+        //    model.MessageHistory = _mapper.Map<List<ChatMessageViewModel>>(messages);
+        //    return View("Index", model);
+        //}
     }
 }
