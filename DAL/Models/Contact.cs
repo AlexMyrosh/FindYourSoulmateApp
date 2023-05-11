@@ -2,7 +2,9 @@
 {
     public class Contact
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+
+        public User User { get; set; }
 
         public User ContactUser { get; set; }
     }

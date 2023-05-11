@@ -20,6 +20,7 @@ namespace BLL.Services
         public async Task AddMessageAsync(ChatMessageModel model)
         {
             var entity = _mapper.Map<ChatMessage>(model);
+            entity.Timestamp = DateTime.Now;
             await _unitOfWork.ChatRepository.AddMessageAsync(entity);
             await _unitOfWork.SaveChangesAsync();
         }

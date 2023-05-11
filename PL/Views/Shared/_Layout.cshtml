@@ -10,39 +10,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.12/signalr.min.js"></script>
-    
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
     <link rel="stylesheet" href="/css/CustomStyles.css">
-
 </head>
 <body>
-<header>
-    
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+            <div class="container">
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand">Home</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="ProfileView">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Profile" asp-action="Index">View other profiles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Help" asp-action="Index">Contacts</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Chat" asp-action="Index">Chats</a>
-                        </li>
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="ProfileView">Your profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Profile" asp-action="Index">Find people</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Chat" asp-action="Contacts">Contacts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Help" asp-action="Index">Help</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav">
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <span class="navbar-text">Hello, @User.Identity.Name!</span>
+                                <a class="nav-link" asp-controller="Account" asp-action="ProfileView">Hello, @User.Identity.Name!</a>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
@@ -63,26 +64,25 @@
                     </ul>
                 </div>
             </div>
-    </nav>
-</header>
+        </nav>
+    </header>
 
-
-    <div class="container bg-white">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
-
-<footer class="border-top footer text-muted">
-    <div class="container text-center">
-        &copy; @DateTime.Now.Year - Find your soulmate app
+    <div>
+        <div>
+            @RenderBody()
+        </div>
     </div>
-</footer>
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+    <footer class="border-top footer">
+        <div class="container text-center">
+            &copy; @DateTime.Now.Year - Find your soulmate app
+        </div>
+    </footer>
 
-@await RenderSectionAsync("Scripts", required: false)
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

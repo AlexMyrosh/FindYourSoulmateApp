@@ -10,10 +10,6 @@ namespace BLL.Services.Interfaces
 
         public Task<UserModel> UpdateAsync(UserModel model);
 
-        public Task UpdateEmail(ClaimsPrincipal principal, string newEmail);
-
-        public Task UpdateUsername(ClaimsPrincipal principal, string newUsername);
-
         public Task<IdentityResult> DeletePermanentlyAsync(UserModel model);
 
         public Task<IdentityResult> DeleteTemporarilyAsync(UserModel model);

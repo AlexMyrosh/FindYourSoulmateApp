@@ -1,6 +1,6 @@
 ﻿using PL.ViewModels;
 
-namespace PL.Models
+namespace PL.ViewModels
 {
     public class InterestViewModel
     {

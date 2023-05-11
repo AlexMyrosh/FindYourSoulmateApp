@@ -1,16 +1,237 @@
-﻿.footer {
+footer {
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
+    background-color: #ffc5be;
+}
+
+.custom-navbar {
+    background-color: #ffc5be;
+}
+
+body {
+    font-family: Montserrat;
+    background-color: #FFDEDA;
+}
+
+.custom-button1 {
+    display: inline-block;
+    color: #ffa296;
+    border: 1px solid #ffa296;
+    padding: 1rem 6rem;
+    font-size: 2.5rem;
+    border-radius: 3rem;
+    text-decoration: none;
+}
+
+.custom-button1:hover {
+    color: white;
+    background-color: #ffa296;
+    border-color: #ffa296;
+}
+
+.custom-button1:active {
+    color: white;
+    background-color: #fc9183;
+    border-color: #fc9183;
+}
+
+.custom-button2 {
+    display: inline-block;
+    color: #ffa296;
+    border: 1px solid #ffa296;
+    padding: 1rem 4rem;
+    font-size: 1.5rem;
+    border-radius: 3rem;
+    text-decoration: none;
+}
+
+.custom-button2:hover {
+    color: white;
+    background-color: #ffa296;
+    border-color: #ffa296;
+}
+
+.custom-button2:active {
+    color: white;
+    background-color: #fc9183;
+    border-color: #fc9183;
+}
+
+.center-div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+.custom-border1 {
+    border: 1px solid #fc9183;
+    border-radius: 3em;
+}
+
+.custom-border2 {
+    border: 2px solid #ffc5be;
+}
+
+.custom-border2:focus {
+    border-color: red;
+    outline: none;
+    box-shadow: none;
+}
+
+.custom-checkbox {
+    border: 2px solid #ffc5be;
+}
+
+.custom-checkbox:checked {
+    border-color: red;
+    outline: none;
+    box-shadow: none;
+    background-color: red;
+    border-color: red;
+}
+
+.custom-checkbox:focus {
+    border-color: red;
+    outline: none;
+    box-shadow: none;
+}
+
+.custom-link {
+    color: black;
+}
+
+.custom-link:hover {
+    color: black;
+}
+
+.custom-form1 {
+    background-color: #f5e6e4;
+    border-radius: 5rem;
+    border: 1px solid #fc9183;
+}
+
+.custom-label {
+    font-size: 18px;
+}
+
+.custom-select option {
+    background-color: #f5e6e4;
+}
+
+.custom-select option:checked {
+    background-color: #fc9183;
+}
+
+.custom-like-button {
+    display: inline-block;
+    color: #285e29;
+    border: 1px solid #142414;
+    padding: 1rem 6rem;
+    font-size: 2.5rem;
+    border-radius: 3rem;
+    text-decoration: none;
+    background-color: #cfffd0;
+}
+
+.custom-like-button:hover {
+    color: white;
+    background-color: #92de94;
+}
+
+.custom-like-button:active {
+    color: white;
+    background-color: #68a36a;
+}
+
+.custom-dislike-button {
+    display: inline-block;
+    color: #f70505;
+    border: 1px solid #f70505;
+    padding: 1rem 4.5rem;
+    font-size: 2.5rem;
+    border-radius: 3rem;
+    text-decoration: none;
+    background-color: #f7c1c1;
+}
+
+.custom-dislike-button:hover {
+    color: white;
+    background-color: #faa5a5;
+}
+
+.custom-dislike-button:active {
+    color: white;
+    background-color: #fa8787;
+}
+
+.mutual-interest {
+    background-color: #faa5a5;
+    border-radius: 1rem;
+    border: 1px solid #f70505;
 }
 
 .interest-card {
-    width: 150px;
     border-radius: 1rem;
+    background-color: #fcd2d2;
+    border: 1px solid #f70505;
 }
 
-.selected-interest {
-    background-color: #b8e9ed; /* Change this to the desired color */
-    border-color: blue;
+.custom-form2 {
+    background-color: #f5e6e4;
+    border-radius: 2rem;
+    border: 1px solid #fc9183;
+}
+
+.custom-link2 {
+    color: #f70505;
+    border-radius: 15px;
+    border: 1px solid #f70505;
+}
+
+.custom-link2:hover {
+    color: white;
+    background-color: #fa8787;
+
+}
+
+.chat-box {
+    border: 1px solid #f70505;
+    background-color: #f5e6e4;
+    border-radius: 15px;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 150px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+::-webkit-scrollbar {
+    border-radius: 150px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #fa8787;
+    border-radius: 150px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.custom-container {
+    height: 200px;
+    position: relative;
+}
+
+.vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }

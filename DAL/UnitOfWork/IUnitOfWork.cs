@@ -14,6 +14,8 @@ namespace DAL.UnitOfWork
 
         public IFeedbackRepository FeedbackRepository { get; }
 
+        public IContactRepository ContactRepository { get; }
+
         public void ClearTracking();
 
         public Task SaveChangesAsync();

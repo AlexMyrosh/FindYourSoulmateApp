@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PL.Enums;
-using PL.Models;
 
 namespace PL.ViewModels
 {
@@ -20,8 +19,6 @@ namespace PL.ViewModels
 
         public List<InterestViewModel>? Interests { get; set; }
 
-        public List<Guid>? SelectedInterests { get; set; } = new List<Guid>();
-
         public LookingForGenderViewModel LookingForGender { get; set; }
 
         public RelationTypeViewModel RelationType { get; set; }
@@ -31,5 +28,17 @@ namespace PL.ViewModels
         public DateTime LastLogin { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public List<UserViewModel> LikedUsers { get; set; }
+
+        public List<UserViewModel> LikedByUsers { get; set; }
+
+        public List<ChatMessageViewModel> SentMessages { get; set; }
+
+        public List<ChatMessageViewModel> ReceivedMessages { get; set; }
+
+        public List<ContactViewModel> Contacts { get; set; }
+
+        public List<ContactViewModel> UsersWithThisContact { get; set; }
     }
 }

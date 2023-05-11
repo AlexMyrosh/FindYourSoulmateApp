@@ -21,7 +21,9 @@ namespace BLL.AutoMapper
                 .ForMember(dest => dest.RelationType, conf => conf.MapFrom(source => source.RelationType));
 
             CreateMap<User, UserModel>();
+
             CreateMap<InterestModel, Interest>().ReverseMap();
+            CreateMap<ContactModel, Contact>().ReverseMap();
 
             CreateMap<GenderModel, Gender>().ReverseMap();
             CreateMap<LookingForGenderModel, LookingForGender>().ReverseMap();

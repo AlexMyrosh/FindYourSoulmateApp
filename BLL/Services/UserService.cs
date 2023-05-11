@@ -51,40 +51,30 @@ namespace BLL.Services
 
             if (isEmailChanged)
             {
-                await _unitOfWork.UserRepository.ChangeEmailAsync(entity, entity.Email);
+                await UpdateEmail(model, entity.Email);
             }
 
             if (isUsernameChanged)
             {
-                await _unitOfWork.UserRepository.ChangeUsernameAsync(entity, entity.UserName);
+                await UpdateUsername(model, entity.UserName);
             }
 
             await _unitOfWork.SaveChangesAsync();
             return _mapper.Map<UserModel>(result);
         }
 
-        public async Task UpdateEmail(ClaimsPrincipal principal, string newEmail)
+        private async Task UpdateEmail(UserModel user, string newEmail)
         {
-            var entity = await _unitOfWork.UserRepository.GetCurrentUserWithDetailsAsync(principal);
-            if (entity == null) return;
-
-            if (entity.Email != newEmail)
-            {
-                await _unitOfWork.UserRepository.ChangeEmailAsync(entity, newEmail);
-                await _unitOfWork.AccountRepository.RefreshSignInAsync(entity);
-            }
+            var entity = _mapper.Map<User>(user);
+            await _unitOfWork.UserRepository.ChangeEmailAsync(entity, newEmail);
+            await _unitOfWork.AccountRepository.RefreshSignInAsync(entity);
         }
 
-        public async Task UpdateUsername(ClaimsPrincipal principal, string newUsername)
+        private async Task UpdateUsername(UserModel user, string newUsername)
         {
-            var entity = await _unitOfWork.UserRepository.GetCurrentUserWithDetailsAsync(principal);
-            if (entity == null) return;
-
-            if (entity.UserName != newUsername)
-            {
-                await _unitOfWork.UserRepository.ChangeUsernameAsync(entity, newUsername);
-                await _unitOfWork.AccountRepository.RefreshSignInAsync(entity);
-            }
+            var entity = _mapper.Map<User>(user);
+            await _unitOfWork.UserRepository.ChangeUsernameAsync(entity, newUsername);
+            await _unitOfWork.AccountRepository.RefreshSignInAsync(entity);
         }
 
         public async Task<IdentityResult> DeletePermanentlyAsync(UserModel model)

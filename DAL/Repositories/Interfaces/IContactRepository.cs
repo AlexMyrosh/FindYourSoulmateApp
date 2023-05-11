@@ -1,6 +1,11 @@
-﻿namespace DAL.Repositories.Interfaces
+﻿using DAL.Models;
+
+namespace DAL.Repositories.Interfaces
 {
-    internal interface IContactRepository
+    public interface IContactRepository
     {
+        public Task<Contact> AddAsync(Contact contact);
+
+        public Task<List<Contact>> GetAllContactsForUserAsync(string userId);
     }
 }

@@ -2,7 +2,6 @@
 using BLL.Enums;
 using BLL.Models;
 using PL.Enums;
-using PL.Models;
 using PL.ViewModels;
 
 namespace PL.AutoMapper
@@ -11,15 +10,15 @@ namespace PL.AutoMapper
     {
         public ModelsToViewModelsAutoMapper()
         {
-            CreateMap<UserViewModel, UserModel>()
-                .ForMember(dest => dest.FirstName, conf => conf.MapFrom(source => source.FirstName))
-                .ForMember(dest => dest.LastName, conf => conf.MapFrom(source => source.LastName))
-                .ForMember(dest => dest.Age, conf => conf.MapFrom(source => source.Age))
-                .ForMember(dest => dest.BirthDate, conf => conf.MapFrom(source => source.BirthDate))
-                .ForMember(dest => dest.Gender, conf => conf.MapFrom(source => source.Gender))
-                .ForMember(dest => dest.Bio, conf => conf.MapFrom(source => source.Bio))
-                .ForMember(dest => dest.LookingForGender, conf => conf.MapFrom(source => source.LookingForGender))
-                .ForMember(dest => dest.RelationType, conf => conf.MapFrom(source => source.RelationType))
+            CreateMap<UpdateUserViewModel, UserModel>()
+                .ForMember(dest => dest.FirstName, conf => conf.MapFrom(source => source.UserData.FirstName))
+                .ForMember(dest => dest.LastName, conf => conf.MapFrom(source => source.UserData.LastName))
+                .ForMember(dest => dest.Age, conf => conf.MapFrom(source => source.UserData.Age))
+                .ForMember(dest => dest.BirthDate, conf => conf.MapFrom(source => source.UserData.BirthDate))
+                .ForMember(dest => dest.Gender, conf => conf.MapFrom(source => source.UserData.Gender))
+                .ForMember(dest => dest.Bio, conf => conf.MapFrom(source => source.UserData.Bio))
+                .ForMember(dest => dest.LookingForGender, conf => conf.MapFrom(source => source.UserData.LookingForGender))
+                .ForMember(dest => dest.RelationType, conf => conf.MapFrom(source => source.UserData.RelationType))
                 .ForMember(dest => dest.Interests, conf => conf.MapFrom(source => source.SelectedInterests.Select(id =>
                     new InterestModel
                     {
@@ -45,7 +44,6 @@ namespace PL.AutoMapper
                 .ForMember(dest => dest.AccessFailedCount, conf => conf.Ignore());
 
             CreateMap<UserModel, UserViewModel>();
-
             CreateMap<InterestViewModel, InterestModel>().ReverseMap();
             CreateMap<RegisterViewModel, UserViewModel>().ReverseMap();
             CreateMap<RegisterViewModel, UserModel>().ReverseMap();
@@ -53,10 +51,12 @@ namespace PL.AutoMapper
             CreateMap<LoginViewModel, UserModel>().ReverseMap();
             CreateMap<ChatViewModel, ChatMessageModel>().ReverseMap();
             CreateMap<FeedbackViewModel, FeedbackModel>().ReverseMap();
+            CreateMap<ChatMessageViewModel, ChatMessageModel>().ReverseMap();
 
             CreateMap<GenderViewModel, GenderModel>().ReverseMap();
             CreateMap<LookingForGenderViewModel, LookingForGenderModel>().ReverseMap();
             CreateMap<RelationTypeViewModel, RelationTypeModel>().ReverseMap();
+            CreateMap<ContactViewModel, ContactModel>().ReverseMap();
         }
     }
 }

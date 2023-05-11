@@ -47,6 +47,16 @@ namespace DAL.Context
                 .HasForeignKey(c => c.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<Contact>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.Contacts)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Contact>()
+                .HasOne(c => c.ContactUser)
+                .WithMany(u => u.UsersWithThisContact)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Interest>().HasData(new List<Interest>
             {
                 new Interest { Id = new Guid("b6b6b5b6-376e-4280-a44e-7912ce9fdb18"), Name = "Art" },

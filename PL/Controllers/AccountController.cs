@@ -3,7 +3,6 @@ using BLL.Models;
 using BLL.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PL.Models;
 using PL.ViewModels;
 
 namespace PL.Controllers
@@ -89,7 +88,7 @@ namespace PL.Controllers
                 {
                     return LocalRedirect(returnUrl);
                 }
-
+                // Maybe go through list of errors like in register method?
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                 return View(model);
 
@@ -149,11 +148,14 @@ namespace PL.Controllers
                     return NotFound("User not found.");
                 }
 
-                var userViewModel = _mapper.Map<UserViewModel>(userModel);
+                var viewModel = new UpdateUserViewModel
+                {
+                    UserData = _mapper.Map<UserViewModel>(userModel),
+                };
                 var interestModels = await _interestService.GetAllAsync();
-                userViewModel.Interests = _mapper.Map<List<InterestViewModel>>(interestModels);
+                viewModel.UserData.Interests = _mapper.Map<List<InterestViewModel>>(interestModels);
 
-                return View(userViewModel);
+                return View(viewModel);
             }
             catch
             {
@@ -163,14 +165,14 @@ namespace PL.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> ProfileUpdate(UserViewModel viewModel)
+        public async Task<IActionResult> ProfileUpdate(UpdateUserViewModel viewModel)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
                     var interestModels = await _interestService.GetAllAsync();
-                    viewModel.Interests = _mapper.Map<List<InterestViewModel>>(interestModels);
+                    viewModel.UserData.Interests = _mapper.Map<List<InterestViewModel>>(interestModels);
                     return View(viewModel);
                 }
 
@@ -185,8 +187,6 @@ namespace PL.Controllers
 
                 // Save the changes
                 await _userService.UpdateAsync(userModel);
-                await _userService.UpdateEmail(User, viewModel.Email);
-                await _userService.UpdateUsername(User, viewModel.UserName);
                 return RedirectToAction("ProfileView");
             }
             catch
@@ -232,6 +232,28 @@ namespace PL.Controllers
 
                 await _accountService.RefreshSignInAsync(user);
                 return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                return View("Error");
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("Account/Profile/{userId}")]
+        public async Task<IActionResult> UserProfileById(string userId)
+        {
+            try
+            {
+                var userModel = await _userService.GetByIdWithDetailsAsync(userId);
+                if (userModel == null)
+                {
+                    return NotFound("User not found.");
+                }
+
+                var userViewModel = _mapper.Map<UserViewModel>(userModel);
+                return View(userViewModel);
             }
             catch
             {

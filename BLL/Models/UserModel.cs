@@ -28,5 +28,17 @@ namespace BLL.Models
         public DateTime LastLogin { get; set; }
 
         public bool IsDeleted { get; set; }
+
+        public List<UserModel> LikedUsers { get; set; }
+
+        public List<UserModel> LikedByUsers { get; set; }
+
+        public List<ChatMessageModel> SentMessages { get; set; }
+
+        public List<ChatMessageModel> ReceivedMessages { get; set; }
+
+        public List<ContactModel> Contacts { get; set; }
+
+        public List<ContactModel> UsersWithThisContact { get; set; }
     }
 }
