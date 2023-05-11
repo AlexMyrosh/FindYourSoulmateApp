@@ -1,0 +1,28 @@
+﻿@model List<PL.ViewModels.ContactViewModel>
+
+@{
+    ViewData["Title"] = "Contacts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 py-3 px-5">
+            <h1 class="text-center mt-4 mb-4">Mutual people</h1>
+            <div class="card custom-form2">
+                <div class="py-3 px-5" style="font-size: 22px;">
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        <div class="mb-2">
+                            @(i + 1). <a class="custom-link" asp-controller="Account" asp-action="UserProfileById" asp-route-userId="@Model[i].ContactUser.Id">@Model[i].ContactUser.FirstName @Model[i].ContactUser.LastName</a> (@Model[i].ContactUser.UserName)
+                            <a class="btn custom-link2" asp-controller="Chat" asp-action="Index" asp-route-userId="@Model[i].ContactUser.Id">Open chat</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

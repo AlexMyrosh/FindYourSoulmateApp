@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model PL.ViewModels.UserViewModel
+@{
+    ViewData["Title"] = Model.UserName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h1 class="text-center mt-4 mb-4">@Model.FirstName @Model.LastName profile</h1>
+    <div class="card custom-form1">
+        <div class="pt-5 px-5" style="font-size: 18px;">
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="FirstName"></label>: @Model.FirstName
+            </div>
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="LastName"></label>: @Model.LastName
+            </div>
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="Age"></label>: @Model.Age
+            </div>
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="BirthDate"></label>: @Model.BirthDate.ToShortDateString()
+            </div>
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="Gender"></label>: @Model.Gender
+            </div>
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="Bio"></label>: @Model.Bio
+            </div>
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="Interests"></label>: @string.Join(", ", Model.Interests.Select(i => i.Name))
+            </div>
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="LookingForGender"></label>: @Model.LookingForGender
+            </div>
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="RelationType"></label>: @Model.RelationType
+            </div>
+            <div class="mb-1">
+                <label class="fw-bold custom-label" asp-for="UserName"></label>: @Model.UserName
+            </div>
+            <div class="mb-5">
+                <label class="fw-bold custom-label" asp-for="PhoneNumber"></label>: @Model.PhoneNumber
+            </div>
+        </div>
+    </div>
+</div>

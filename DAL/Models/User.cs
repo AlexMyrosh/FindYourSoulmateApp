@@ -38,5 +38,7 @@ namespace DAL.Models
         public List<ChatMessage> ReceivedMessages { get; set; }
 
         public List<Contact> Contacts { get; set; }
+
+        public List<Contact> UsersWithThisContact { get; set; }
     }
 }

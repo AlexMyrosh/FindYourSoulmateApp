@@ -6,39 +6,52 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <h2>Contact Us</h2>
+<div class="container center-div">
+    <div class="row justify-content-center">
+        <div class="col-md-8 custom-border1 py-3 px-5">
+            <h1 class="text-center">Contact Us</h1>
             <hr>
-            <form asp-controller="Help" asp-action="SendFeedback" method="post" class="contact-form">
-                <div class="form-group">
-                    <label asp-for="Name"></label>
-                    <input asp-for="Name" class="form-control" />
+            <form asp-controller="Help" asp-action="SendFeedback" method="post">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <label class="custom-label" asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control custom-border2" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="Contact"></label>
-                    <input asp-for="Contact" class="form-control" />
+                <div class="mb-3">
+                    <label class="custom-label" asp-for="Contact"></label>
+                    <input asp-for="Contact" class="form-control custom-border2" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="Message"></label>
-                    <textarea asp-for="Message" class="form-control"></textarea>
+                <div class="mb-3">
+                    <label class="custom-label" asp-for="Message"></label>
+                    <textarea rows="6" asp-for="Message" class="form-control custom-border2"></textarea>
                 </div>
 
                 <div class="text-danger" asp-validation-summary="All"></div>
-                <button type="submit" class="btn btn-primary">Send</button>
+
+                <div class="text-center">
+                    <button type="submit" class="custom-button2">Send</button>
+                </div>
             </form>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+
+
+    <div class="row justify-content-center text-center mt-3">
+        <div class="col-md-8 ">
             <h2>Contact Information</h2>
             <hr>
-            <ul class="list-unstyled">
-                <li><i class="fa fa-map-marker"></i>Prospect Nauki, 9A, Kharkiv, Ukraine</li>
-                <li><i class="fa fa-phone"></i> (050)201-4596</li>
-                <li><i class="fa fa-envelope"></i>oleksandr.miroshnychenko@hneu.net</li>
-            </ul>
+            <div class="mb-3">
+                <label class="custom-label">Address:</label>
+                <a class="custom-label custom-link">Prospect Nauki, 9A, Kharkiv, Ukraine </a>
+            </div>
+            <div class="mb-3">
+                <label class="custom-label">Phone:</label>
+                <a class="custom-label custom-link" href="tel:0502014596">(050)201-4596</a>
+            </div>
+            <div class="mb-3">
+                <label class="custom-label">Email:</label>
+                <a class="custom-label custom-link" href="mailto: oleksandr.miroshnychenko@hneu.net">oleksandr.miroshnychenko@hneu.net</a>
+            </div>
         </div>
     </div>
 </div>

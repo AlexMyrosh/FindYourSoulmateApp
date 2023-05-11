@@ -3,4 +3,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-center">Home page</h1>
+<div class="text-center center-div">
+    <div>
+        <h1 style="font-size: 6em;">Welcome</h1>
+        <h2 style="font-size: 4em; color: grey;" class="mb-5">Ready to find your soulmates?</h2>
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            <a asp-controller="Profile" asp-action="Index" class="custom-button1">YES</a>
+        }
+        else
+        {
+            <a asp-controller="Account" asp-action="Login" class="custom-button1">Login</a>
+        }
+        
+    </div>
+</div>

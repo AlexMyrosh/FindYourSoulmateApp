@@ -5,58 +5,58 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
-    <div class="row">
+<div class="container center-div">
     @foreach (var userCard in Model.UsersToDisplay)
     {
-        <div class="col-12 userCard" style="display: none;">
-            <div class="d-flex justify-content-center align-items-center">
-                <div class="card">
-                    <div class="card-body">
-                            <h5 class="card-title">@userCard.FirstName @userCard.LastName</h5>
-                        <p class="card-text">
-                                Age: @userCard.Age<br />
-                                Gender: @userCard.Gender<br />
-                                Relation Type: @userCard.RelationType<br />
-                                Bio: @userCard.Bio
-                        </p>
-                        <h6>Interests:</h6>
-                        <div class="row">
-                                @foreach (var interest in userCard.Interests)
+        <div class="card custom-form1 userCard" style="display: none;">
+            <div class="pt-5 px-5">
+                <div class="pt-5 px-5">
+                    <h1 class="card-title text-center">@userCard.FirstName @userCard.LastName</h1>
+                    <p class="card-text">
+                        <div class="mb-1">
+                            <label class="fw-bold">Age: </label> @userCard.Age
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-bold">Gender: </label> @userCard.Gender
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-bold">Relation Type: </label> @userCard.RelationType
+                        </div>
+                        <div class="mb-1">
+                            <label class="fw-bold">Bio: </label> @userCard.Bio
+                        </div>
+                    </p>
+                    <h4 class="fw-bold">Interests:</h4>
+                    <div class="row">
+                        @foreach (var interest in userCard.Interests)
+                        {
+                            @if (!Model.CurrentUser.Interests.Select(i => i.Id).Contains(interest.Id))
                             {
-                                @if (!Model.CurrentUser.Interests.Select(i => i.Id).Contains(interest.Id))
-                                {
-                                    <div class="col mb-3 ">
-                                        <div class="card interest-card">
-                                            <div class="card-body">
-                                                <p class="card-title">@interest.Name</p>
-                                            </div>
-                                        </div>
+                                <div class="col mb-3">
+                                    <div class="interest-card px-2 py-2 d-flex align-items-center justify-content-center">
+                                        <p class="card-title mb-0">@interest.Name</p>
                                     </div>
-                                }
-                                else
-                                {
-                                    <div class="col mb-3">
-                                        <div class="card interest-card selected-interest">
-                                            <div class="card-body">
-                                                <p class="card-title">@interest.Name</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                                </div>
                             }
+                            else
+                            {
+                                <div class="col mb-3">
+                                    <div class="mutual-interest px-2 py-2 d-flex align-items-center justify-content-center">
+                                        <p class="card-title mb-0">@interest.Name</p>
+                                    </div>
+                                </div>
+                            }
+                        }
 
-                        </div>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                <button class="btn btn-success likeBtn" data-user-id="@userCard.Id">Like</button>
-                                <button class="btn btn-danger dislikeBtn" data-user-id="@userCard.Id">Dislike</button>
-                        </div>
                     </div>
                 </div>
             </div>
+            <div class="text-center py-5 px-5">
+                <button class="custom-like-button likeBtn mx-2" data-user-id="@userCard.Id">Like</button>
+                <button class="custom-dislike-button dislikeBtn" data-user-id="@userCard.Id">Dislike</button>
+            </div>
         </div>
     }
-    </div>
 </div>
 
 @section Scripts {
@@ -71,8 +71,16 @@
                 let action = $(this).hasClass("likeBtn") ? "Like" : "Dislike";
                 let userId = $(this).data("user-id");
 
+                // Get AntiForgeryToken
+                let token = $('input[name="__RequestVerificationToken"]').val();
+
                 // Send like or dislike action to the server
-                $.post("/Profile/" + action, { userId: userId }, function (result) {
+                $.post("/Profile/" + action, 
+                { 
+                    userId: userId,
+                    __RequestVerificationToken: token // Include the token in the request
+                }, 
+                function (result) {
                     // Hide the current card and show the next one
                     currentCard.hide().next(".userCard").show();
                 });

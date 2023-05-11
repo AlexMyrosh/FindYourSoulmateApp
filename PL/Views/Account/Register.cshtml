@@ -6,43 +6,44 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container">
+<div class="container center-div">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h2 class="text-center">Register</h2>
-            <form method="post">
+        <div class="col-md-6 custom-border1 py-3 px-5">
+            <h1 class="text-center">Register</h1>
+            <form asp-controller="Account" asp-action="Register" method="post">
+                @Html.AntiForgeryToken()
                 <div class="mb-3">
                     <label asp-for="FirstName" class="form-label"></label>
-                    <input asp-for="FirstName" class="form-control" />
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                    <input asp-for="FirstName" class="form-control custom-border2" />
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="UserName" class="form-label"></label>
-                    <input asp-for="UserName" class="form-control" />
-                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <input asp-for="UserName" class="form-control custom-border2" />
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Email" class="form-label"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <input asp-for="Email" class="form-control custom-border2" />
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="Password" class="form-label"></label>
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <input asp-for="Password" class="form-control custom-border2" />
                 </div>
 
                 <div class="mb-3">
                     <label asp-for="ConfirmPassword" class="form-label"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    <input asp-for="ConfirmPassword" class="form-control custom-border2" />
                 </div>
 
+                <div>
+                    <p>Already have the account? <a class="custom-link" asp-controller="Account" asp-action="Login">Login</a></p>
+                </div>
                 <div class="text-danger" asp-validation-summary="All"></div>
-                <button type="submit" class="btn btn-primary">Register</button>
+                <div class="text-center">
+                    <button type="submit" class="custom-button2">Register</button>
+                </div>
             </form>
         </div>
     </div>

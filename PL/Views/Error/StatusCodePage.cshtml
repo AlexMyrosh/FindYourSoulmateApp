@@ -3,13 +3,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="text-center">
-                <h1 class="display-4">Oops!</h1>
-                <p class="lead"> @ViewBag.ErrorMessage</p>
-            </div>
-        </div>
+<div class="text-center center-div">
+    <h1 style="font-size: 6em;">Oops!</h1>
+    <h2 style="font-size: 4em; color: grey;" class="mb-5">@ViewBag.ErrorMessage</h2>
+    <div class="text-center">
+        <a asp-controller="Home" asp-action="Index" class="custom-button2">Main page</a>
     </div>
 </div>

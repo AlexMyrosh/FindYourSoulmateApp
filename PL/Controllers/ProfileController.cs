@@ -84,7 +84,7 @@ namespace PL.Controllers
             return userViewModels;
         }
 
-        public void RegisterUserView(string viewerUserId)
+        private void RegisterUserView(string viewerUserId)
         {
             var userView = new UserView
             {
